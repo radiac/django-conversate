@@ -1,0 +1,11 @@
+{% extends "conversate/base.html" %}
+
+{% block conversate_content %}
+    {% if rooms %}
+        {% for room in rooms %}
+            <p><a href="{{ room.get_absolute_url }}">{{ room.title }}</a></p>
+        {% endfor %}
+    {% else %}
+        <p>There are no rooms available.</p>
+    {% endif %}
+{% endblock %}

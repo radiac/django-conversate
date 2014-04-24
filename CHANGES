@@ -1,0 +1,27 @@
+=========================
+Django Conversate Changes
+=========================
+
+Changelog
+=========
+
+0.1.0       2014-
+            Feature:    Initial release
+
+
+Roadmap
+=======
+
+Target
+0.0.x       Improve room.updateTimes to eventually update older entries
+            Pagination
+            Admin option to clear room without deleting it
+            User options
+            * Separate flash and title visual alerts into two options
+            * Provide custom e-mail address for alerts
+            * Set alert time ranges
+            * Colour picker
+0.1.0       Initial release
+0.2.0       Support for long-polling and websockets
+
+The roadmap is subject to change; let me know if something is important to you.

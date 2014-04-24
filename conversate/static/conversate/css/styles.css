@@ -1,0 +1,293 @@
+/*
+** CSS for Conversate
+** All elements are prefixed with cnv_
+*/
+
+
+/******************************************************************************
+**                                                            Unmanaged layout
+*/
+
+.content {
+    position:   relative;
+}
+
+
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+**                                                              Message table
+*/
+
+.cnv_table {
+    width:  100%;
+    border-collapse:    collapse;
+}
+.cnv_table td {
+    font-size:  0.9em;
+    vertical-align:     top;
+    border-bottom:  1px solid #eee;
+    padding:    0 0.4em;
+}
+.cnv_table .cnv_time,
+.cnv_hourglass_note {
+    font-size:  0.6em;
+    color: #888;
+}
+.cnv_table .cnv_user {
+    border-right:   1px solid #eee;
+}
+.cnv_table .cnv_content {
+}
+
+.cnv_table tr.cnv_ERROR td {
+    color:  #fff;
+    background: #c00;
+}
+
+
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+**                                                              Sidebar
+*/
+
+.cnv_sidebar h1 {
+    margin: 0.6em 0 0.2em;
+}
+
+
+.cnv_sidebar .cnv_submit {
+    width:  100%;
+    overflow: hidden;
+}
+.cnv_sidebar .cnv_submit input[type="submit"] {
+    float:  right;
+}
+
+
+
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+**                                                              User table
+*/
+
+.cnv_users {
+    width:  100%;
+    font-size:  0.8em;
+}
+.cnv_users td {
+    width:  75px;
+}
+.cnv_users tr.cnv_active td {
+    border-left:   8px solid #6a4;
+}
+.cnv_users tr.cnv_afk td {
+    border-left:   8px solid #fa0;
+}
+.cnv_users tr.cnv_inactive td {
+    border-left:   8px solid #a54;
+}
+
+
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+**                                                              Settings
+*/
+
+ul.cnv_settings {
+    list-style: none;
+    padding:    0;
+    margin:     0;
+}
+ul.cnv_settings li {
+    margin-bottom:  0.5em;
+}
+
+ul.cnv_settings label {
+    display:    inline-block;
+    width:      6em;
+}
+
+ul.cnv_settings .helptext {
+    display:    block;
+    font-size:  0.8em;
+    margin-left:    2.5em;
+}
+
+
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+**                                                              Input bar
+*/
+
+.cnv_input {
+    position:   absolute;
+    bottom: 0;
+    left:   0;
+    right:  0;
+    width:  100%;
+    background-color:   #ccc;
+    padding:    4px 0;
+}
+.cnv_input .cnv_table td {
+    border-bottom: 0;
+}
+.cnv_input input {
+    border: 0;
+}
+.cnv_input input[name=content] {
+    width:  100%;
+}
+
+
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+**                                                              Hourglass
+*/
+
+.cnv_hourglass_con {
+    position:   relative;
+    border: 1px solid #888;
+    height: 1em;
+    margin: 2px;
+}
+.cnv_hourglass {
+    background: #aaa;
+    height: 100%;
+}
+.cnv_hourglass_note {
+    position:   absolute;
+    top: 0;
+    bottom:0;
+    left:0;
+    right:0;
+    padding: 2px;
+    text-align: center;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+
+/******************************************************************************
+**                                                   JavaScript-managed layout
+*/
+
+.cnv_js .cnv_msgs {
+    position:   absolute;
+    top:    0;
+    right:  200px;
+    left:   0;
+}
+
+.cnv_js .cnv_sidebar {
+    position:   absolute;
+    top:    0;
+    right:  0;
+    width:  200px;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;  
+    padding:    0 1em;
+}
+
+.cnv_js .cnv_sidebar_toggle {
+    display:    none;
+}
+
+
+@media all and (max-width: 800px) {
+    /* In minimal mode:
+        * msgs are full screen
+        * sidebar is hidden by default, full screen when visible
+        * sidebar_toggle is shown at all times, different icon
+    */
+    .cnv_js .cnv_msgs {
+        right:      0;
+        z-index:    1;
+    }
+    .cnv_js .cnv_sidebar {
+        display:    none;
+        z-index:    2;
+        width:      auto;
+        left:       0;
+        
+        padding-bottom:     1em;
+        border-bottom:      1px solid #000;
+        -webkit-box-shadow: 0 8px 5px -5px rgba(0,0,0,0.8);
+        box-shadow:         0 8px 5px -5px rgba(0,0,0,0.8);
+        
+        background-color:   #fff;
+    }
+    .cnv_js .cnv_sidebar.cnv_visible {
+        display:    block;
+    }
+    
+    .cnv_js .cnv_sidebar_toggle {
+        display:    block;
+        position:   absolute;
+        z-index:    3;
+        top:        0;
+        right:      0;
+        width:      24px;
+        height:     24px;
+        border-style:   solid;
+        border-color:   #4d4d4f;
+        border-width:   0 0 1px 1px;
+        text-decoration:    none;
+        background: url('/static/conversate/images/icons.png') 0 0 no-repeat #fff;
+    }
+    .cnv_js .cnv_sidebar_toggle.cnv_visible {
+        background-position:    0 -24px;
+    }
+}
+
+
+/* old
+
+tr.msg_Leela td {
+    color:  #800;
+}
+tr.msg_Richard td {
+    color:  #008;
+}
+
+div#scrollbar {
+    position:   absolute;
+    top:        0;
+    right:      0;
+    width:      4px;
+    background: #444;
+}
+
+@media all and (max-width: 640px) {
+    div.sidebar_con {
+        display:    none;
+    }
+    div.content {
+        margin-right:   0;
+    }
+}
+
+@media all and (max-width: 300px) {
+    .cnv_msgs > table td.user {
+        display:    none;
+    }
+    .cnv_msgs > table {
+        table-layout:   fixed;
+    }
+    .cnv_msgs > table tr#older {
+        display:    none;
+    }
+    .cnv_msgs > table td.time {
+        width:      20px;
+        overflow:   hidden;
+        white-space: nowrap
+    }
+    
+    div.input .cnv_msgs > table td:nth-child(1) {
+        width:      20px;
+    }
+    div.input .cnv_msgs > table td:nth-child(2) {
+        display:    none;
+    }
+}
+
+
+*/
