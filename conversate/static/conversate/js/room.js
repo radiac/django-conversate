@@ -13,6 +13,7 @@ $('document').ready(function () {
         // API urls
         apiCheck:   null,
         apiSend:    null,
+        apiHistory: null,
         
         // PK of last message
         last:       0,
@@ -358,7 +359,7 @@ $('document').ready(function () {
         }
         
         // Find and categorise time cells, and set up intervals
-        this.timeCells = {0:[],1:[],2:[],3:[],4:[]};
+        this.timeCells = {0:[], 1:[], 2:[], 3:[], 4:[]};
         var $cell, cellTime, interval, now = time();
         $('.cnv_msgs .cnv_time').each(function () {
             $cell = $(this);
@@ -379,6 +380,25 @@ $('document').ready(function () {
             $cell.html(thisRoom._render($cell.text()));
         });
         
+        // Replace first line with controller
+        if (settings.remaining) {
+            this.$history = $('<a href="javascript:void(0);" />')
+                .click(function (e) {
+                    e.preventDefault();
+                    thisRoom.fetchHistory();
+                })
+            ;
+            this.$firstRow = $('.cnv_msgs tr:first-child');
+            this.$firstRow.find('td:last-child')
+                .html(this.$history)
+            ;
+            this._fetchHistory({
+                first: settings.first,
+                remaining:  settings.remaining,
+                messages: []
+            });
+        }
+        
         // Set everything going
         this.poll.start();
     }
@@ -396,6 +416,52 @@ $('document').ready(function () {
         // Request queue
         _requesting: false,
         _requestQueue: [],
+        
+        fetchHistory: function () {
+            var thisRoom = this;
+            $.ajax({
+                cache:  false,
+                type:   'POST',
+                url:    settings.apiHistory,
+                data:   {
+                    'first': this.first,
+                    'csrfmiddlewaretoken': this.csrfToken,
+                },
+                dataType: 'json',
+                success: function (data) {
+                    thisRoom._fetchHistory(data);
+                },
+                error:  function (jqXHR, textStatus, errorThrown) {
+                    thisRoom.poll.start();
+                    thisRoom.error(errorThrown);
+                }
+            });
+        },
+        _fetchHistory: function (data) {
+            this.first = data.first;
+            this.remaining = data.remaining;
+            
+            var i, m, $newLine;
+            for (i=0; i<data.messages.length; i++) {
+                m = data.messages[i];
+                $newLine = this._mkLine(m.msgTime, m.user, m.content)
+                    .insertAfter(this.$firstRow)
+                ;
+                this.timeCells[unitTimeRelative(m.msgTime)].push(
+                    [$newLine.find('.cnv_time'), m.msgTime]
+                );
+            }
+            
+            if (this.remaining === 0) {
+                this.$history.parent().text('No older messages');
+            } else {
+                this.$history.text(
+                    this.remaining + ' older message' + (
+                        this.remaining == 1 ? '' : 's'
+                    )
+                );
+            }
+        },
         
         check: function () {
             this._request(settings.apiCheck, {});
@@ -472,15 +538,20 @@ $('document').ready(function () {
             // Start new poll
             this.poll.start();
         },
-        _add: function (msgTime, user, content) {
+        _mkLine: function (msgTime, user, content) {
             // Add new line and register time cell
-            var $newLine = $(
+            return $(
                 '<tr class="cnv_user_' + user + '">'
                 + '<td class="cnv_time" data-time="' + msgTime + '"></td>'
                 + '<td class="cnv_user">' + user + '</td>'
                 + '<td class="cnv_content">' + this._render(content) + '</td>'
                 + '</tr>'
-            ).appendTo($convTable);
+            );
+        },
+        _add: function (msgTime, user, content) {
+            var $newLine = this._mkLine(msgTime, user, content)
+                .appendTo($convTable)
+            ;
             this.timeCells[unitTimeRelative(msgTime)].push(
                 [$newLine.find('.cnv_time'), msgTime]
             );
@@ -838,7 +909,7 @@ $('document').ready(function () {
         TIME_DENOM = [1, 1, 60, 60*60, 60*60*24]
     ;
     function humanTime(delta, unit) {
-        var term;
+        var term, val;
         if (delta < 0) {
             return TIME_UNITS[0];
         }
@@ -846,7 +917,8 @@ $('document').ready(function () {
             unit = unitTime(delta);
         }
         
-        return '' + Math.floor(delta / TIME_DENOM[unit]) + ' ' + TIME_UNITS[unit];
+        val = Math.floor(delta / TIME_DENOM[unit]);
+        return '' + val + ' ' + TIME_UNITS[unit] + (val == 1 ? '' : 's');
     }
     
     

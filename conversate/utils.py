@@ -20,7 +20,9 @@ def jsonResponse(data):
         mimetype='application/json',
     )
 
-def get_template_settings(room=None, room_user=None, last_message=None):
+def get_template_settings(
+    room=None, room_user=None, extra=None,
+):
     config = {
         'alertEnabled': room_user.alert if room_user else False,
         'serverTime':   int(time.time()),
@@ -34,8 +36,13 @@ def get_template_settings(room=None, room_user=None, last_message=None):
         config['apiSend'] = reverse(
             'conversate-api_send', kwargs={'room_slug': room.slug}
         )
-        if last_message:
-            config['last'] = last_message.pk
+        config['apiHistory'] = reverse(
+            'conversate-api_history', kwargs={'room_slug': room.slug}
+        )
+    
+    # Allow for custom stuff
+    if extra:
+        config.update(extra)
     
     # Copy across settings
     for setting in dir(settings):

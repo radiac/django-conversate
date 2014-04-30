@@ -14,7 +14,6 @@ Roadmap
 
 Target
 0.0.x       Improve room.updateTimes to eventually update older entries
-            Pagination
             Admin option to clear room without deleting it
             User options
             * Separate flash and title visual alerts into two options

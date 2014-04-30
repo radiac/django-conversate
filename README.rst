@@ -92,6 +92,11 @@ Add these settings to your ``settings.py`` file to override the defaults.
 
     Default: ``True``
 
+``CONVERSATE_PAGE_SIZE``
+    Number of lines to show on a page
+    
+    Default: ``100`
+
 ``CONVERSATE_IDLE_AT``:
     The time until the UI decides that the user is idle (in ms)
 
@@ -158,6 +163,7 @@ example::
 Once you have mapped these blocks, the default settings and templates should
 work out of the box with most designs. However, the conversate container
 element in your site's base template must:
+
 * have css position either relative or absolute
 * have an explicit height if ``CONVERSATE_LAYOUT_FIXED`` is False, otherwise
   it must expect its height to be controlled by conversate.

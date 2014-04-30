@@ -50,7 +50,7 @@
             <tr>
                 <td width="75">&nbsp;</td>
                 <td width="75">&nbsp;</td>
-                <td>No older messages</td>
+                <td>{% if remaining == 0 %}No older messages{% else %}Older messages hidden{% endif %}</td>
             </tr>
             
             {% for message in room_messages %}

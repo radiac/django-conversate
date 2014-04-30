@@ -36,12 +36,31 @@ def room(request, room, room_slug):
     """
     Show a room
     """
+    # Get room messages
     room_user = _update_room_user(request, room)
-    messages = list(room.messages.all())
+    messages = room.messages.all()
+    
+    # Paginate
+    msg_count = messages.count()
+    remaining = 0
+    if msg_count > settings.PAGE_SIZE:
+        remaining = msg_count - settings.PAGE_SIZE
+        messages = messages[remaining:]
+    
+    # Need all messages now, force lookup
+    # Need last message for javascript
+    messages = list(messages)
+    first_message = messages[0] if len(messages) > 0 else None
     last_message = messages[-1] if len(messages) > 0 else None
     
     return render(request, 'conversate/room.html', {
-        'conversate_settings': utils.get_template_settings(room, room_user, last_message),
+        'conversate_settings': utils.get_template_settings(
+            room, room_user, extra={
+                'first':    first_message.pk,
+                'last':     last_message.pk,
+                'remaining':    remaining,
+            }
+        ),
         'title':    room.title,
         'room':     room,
         'form':     forms.MessageForm(),
@@ -143,12 +162,22 @@ def _room_users(room, user):
     now = datetime.datetime.now()
     room_users = []
     for room_user in models.RoomUser.objects.filter(room=room):
+        # Calc last seen/spoke
+        last_seen = -1
+        last_spoke = -1
+        if room_user.last_seen:
+            last_seen_delta = now - room_user.last_seen
+            last_seen = last_seen_delta.seconds + (last_seen_delta.days * 24 * 60 * 60)
+        if room_user.last_seen:
+            last_spoke_delta = now - room_user.last_spoke
+            last_spoke = last_spoke_delta.seconds + (last_spoke_delta.days * 24 * 60 * 60)
+        
         room_users.append({
             'username': room_user.user.username,
             'active':       room_user.is_active(now=now),
             'has_focus':    room_user.has_focus,
-            'last_seen':    (now - room_user.last_seen).seconds if room_user.last_seen else -1,
-            'last_spoke':   (now - room_user.last_spoke).seconds if room_user.last_spoke else -1,
+            'last_seen':    last_seen,
+            'last_spoke':   last_spoke,
             'colour':       room_user.colour,
         })
     return room_users
@@ -229,4 +258,37 @@ def api_send(request, room, room_slug):
     return utils.jsonResponse({
         'success':  False,
         'error':    error,
+    })
+
+
+@room_required
+def api_history(request, room, room_slug):
+    first_pk = request.POST.get('first', None)
+    messages = room.messages.filter(pk__lt=first_pk)
+    
+    # Paginate
+    msg_count = messages.count()
+    remaining = 0
+    if msg_count > settings.PAGE_SIZE:
+        remaining = msg_count - settings.PAGE_SIZE
+        messages = messages[remaining:]
+    
+    # Need all messages now, force lookup
+    # Need last message for javascript
+    messages = list(messages)
+    first_message = messages[0] if len(messages) > 0 else None
+    data = [
+        {
+            'pk':   msg.pk,
+            'time': msg.timestamp,
+            'user': msg.user.username,
+            'content':  msg.content,
+        } for msg in messages
+    ]
+    
+    return utils.jsonResponse({
+        'success':  True,
+        'first':    first_message.pk,
+        'remaining':    remaining,
+        'messages':     data,
     })

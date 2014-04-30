@@ -3,6 +3,9 @@ from django.conf import settings
 # If true, add jQuery to the page when required
 ADD_JQUERY = getattr(settings, 'CONVERSATE_ADD_JQUERY', True)
 
+# Number of lines to show on a page
+PAGE_SIZE = getattr(settings, 'CONVERSATE_PAGE_SIZE', 100)
+
 # Time until UI decides user is idle (in ms)
 IDLE_AT = getattr(settings, 'CONVERSATE_IDLE_AT', 60 * 1000)
 

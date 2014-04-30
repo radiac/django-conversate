@@ -35,5 +35,8 @@ urlpatterns = patterns('conversate.views',
     url(r'^(?P<room_slug>[-\w]+)/api/send/$',
         'api_send', name='conversate-api_send',
     ),
+    url(r'^(?P<room_slug>[-\w]+)/api/history/$',
+        'api_history', name='conversate-api_history',
+    ),
     
 )
