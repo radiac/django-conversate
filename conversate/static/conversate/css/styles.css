@@ -16,6 +16,7 @@
 
 .cnv_table {
     width:  100%;
+    table-layout: fixed;
     border-collapse:    collapse;
 }
 .cnv_table td {
@@ -23,21 +24,53 @@
     vertical-align:     top;
     border-bottom:  1px solid #eee;
     padding:    0 0.4em;
+    overflow:   hidden;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
 }
+
 .cnv_table .cnv_time,
 .cnv_hourglass_note {
-    font-size:  0.6em;
+    font-size:  0.625em;
     color: #888;
+}
+.cnv_table .cnv_time {
+    /* Reverse font size 0.625em; 6*1.6 */
+    width:          9.6em;
 }
 .cnv_table .cnv_user {
     border-right:   1px solid #eee;
+    width:          7em;
 }
+
+.cnv_table .cnv_time,
+.cnv_table .cnv_user {
+    white-space:    nowrap;
+    overflow:       hidden;
+    text-overflow:  ellipsis;
+}
+
 .cnv_table .cnv_content {
+    
+    word-wrap: break-word
 }
 
 .cnv_table tr.cnv_ERROR td {
     color:  #fff;
     background: #c00;
+}
+
+
+
+@media all and (max-width:640px) {
+    .cnv_table .cnv_time {
+        /* Reverse font size 0.625em; 3*1.6 */
+        width:          4.8em;
+    }
+    .cnv_table .cnv_user {
+        width:          5em;
+    }
 }
 
 
@@ -86,21 +119,21 @@
 **                                                              Settings
 */
 
-ul.cnv_settings {
+.cnv_settings {
     list-style: none;
     padding:    0;
     margin:     0;
 }
-ul.cnv_settings li {
+.cnv_settings p {
     margin-bottom:  0.5em;
 }
 
-ul.cnv_settings label {
+.cnv_settings label {
     display:    inline-block;
     width:      6em;
 }
 
-ul.cnv_settings .helptext {
+.cnv_settings .helptext {
     display:    block;
     font-size:  0.8em;
     margin-left:    2.5em;
@@ -138,7 +171,8 @@ ul.cnv_settings .helptext {
 .cnv_hourglass_con {
     position:   relative;
     border: 1px solid #888;
-    height: 1em;
+    /* Reverse font size 0.625 */
+    height: 1.6em;
     margin: 2px;
 }
 .cnv_hourglass {

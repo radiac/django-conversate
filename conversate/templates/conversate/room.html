@@ -15,9 +15,9 @@
         {% csrf_token %}
         <table class="cnv_table">
         <tr>
-            <td width="75"><input type="submit" value="Send"></td>
-            <td width="75">{{ request.user.username }}</td>
-            <td>{{ form.content }}</td>
+            <td class="cnv_time" width="75"><input type="submit" value="Send"></td>
+            <td class="cnv_user" width="75">{{ request.user.username }}</td>
+            <td class="cnv_content">{{ form.content }}</td>
         </tr>
         </table>
         </form>
@@ -35,9 +35,9 @@
         <h1>Settings</h1>
         <form method="POST" action="{% url "conversate-settings" room_slug=room.slug %}" class="cnv_form" autocomplete="off">
         {% csrf_token %}
-        <ul class="cnv_settings">
-        {{ settings.as_ul }}
-        </ul>
+        <div class="cnv_settings">
+            {{ settings.as_p }}
+        </div>
         <div class="cnv_submit">
             <input type="submit" value="Save">
         </div>
@@ -48,9 +48,9 @@
         <table class="cnv_table">
             
             <tr>
-                <td width="75">&nbsp;</td>
-                <td width="75">&nbsp;</td>
-                <td>{% if remaining == 0 %}No older messages{% else %}Older messages hidden{% endif %}</td>
+                <td class="cnv_time" width="75">&nbsp;</td>
+                <td class="cnv_user" width="75">&nbsp;</td>
+                <td class="cnv_content">{% if remaining == 0 %}No older messages{% else %}Older messages hidden{% endif %}</td>
             </tr>
             
             {% for message in room_messages %}
