@@ -369,10 +369,13 @@ $('document').ready(function () {
                 [$cell, cellTime]
             );
         });
+        /*
+        // ++
         setInterval(function () { thisRoom.updateTimes(1); }, 0.5 * 1000);
         setInterval(function () { thisRoom.updateTimes(2); }, 30 * 1000);
         setInterval(function () { thisRoom.updateTimes(3); }, 60 * 30 * 1000);
         setInterval(function () { thisRoom.updateTimes(4); }, 60 * 60 * 12 * 1000);
+        */
         
         // Render content
         $('.cnv_msgs .cnv_content').each(function () {
@@ -425,7 +428,7 @@ $('document').ready(function () {
                 url:    settings.apiHistory,
                 data:   {
                     'first': this.first,
-                    'csrfmiddlewaretoken': this.csrfToken,
+                    'csrfmiddlewaretoken': this.csrfToken
                 },
                 dataType: 'json',
                 success: function (data) {
@@ -755,21 +758,20 @@ $('document').ready(function () {
         
         resize: function () {
             var thisLayout = this;
-            if (settings.controlLayout) {
-                // Minimise container to find height of screen without conv
-                // Use timeouts to let DOM update
-                $content.height(10);
-                setTimeout(function () {
+            // Put in a short delay so we don't overload with event processing
+            setTimeout(function () {
+                if (settings.controlLayout) {
                     $content
                         .height($window.height() - $content.offset().top)
                     ;
                     setTimeout(function () {
+                        thisLayout.resize_acting = false;
                         thisLayout._resizeConv();
                     }, 10);
-                }, 10);
-            } else {
-                this._resizeConv();
-            }
+                } else {
+                    thisLayout._resizeConv();
+                }
+            }, 50);
         },
         _resizeConv: function () {
             $conv
