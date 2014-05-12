@@ -98,7 +98,7 @@ def update_settings(request, room, room_slug):
     Process a settings change request
     """
     room_user = _update_room_user(request, room)
-    if request.POST:
+    if room_user and request.POST:
         form = forms.SettingsForm(request.POST)
         if form.is_valid():
             for key, val in form.cleaned_data.items():
@@ -184,7 +184,11 @@ def _room_users(room, user):
     
 def _update_room_user(request, room, has_focus=False, spoke=False):
     # Update user's last seen
-    room_user = models.RoomUser.objects.get(room=room, user=request.user)
+    try:
+        room_user = models.RoomUser.objects.get(room=room, user=request.user)
+    except models.RoomUser.DoesNotExist:
+        # Must be a superuser snooping
+        return None
     now = datetime.datetime.now()
     room_user.last_seen = now
     room_user.inactive_from = now + datetime.timedelta(seconds=settings.DISCONNECT_AT)

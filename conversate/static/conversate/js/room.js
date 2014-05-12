@@ -369,13 +369,11 @@ $('document').ready(function () {
                 [$cell, cellTime]
             );
         });
-        /*
-        // ++
+        
         setInterval(function () { thisRoom.updateTimes(1); }, 0.5 * 1000);
         setInterval(function () { thisRoom.updateTimes(2); }, 30 * 1000);
         setInterval(function () { thisRoom.updateTimes(3); }, 60 * 30 * 1000);
         setInterval(function () { thisRoom.updateTimes(4); }, 60 * 60 * 12 * 1000);
-        */
         
         // Render content
         $('.cnv_msgs .cnv_content').each(function () {
