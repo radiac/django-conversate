@@ -56,8 +56,8 @@ def room(request, room, room_slug):
     return render(request, 'conversate/room.html', {
         'conversate_settings': utils.get_template_settings(
             room, room_user, extra={
-                'first':    first_message.pk,
-                'last':     last_message.pk,
+                'first':    first_message.pk if first_message else None,
+                'last':     last_message.pk if last_message else None,
                 'remaining':    remaining,
             }
         ),
