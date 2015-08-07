@@ -9,6 +9,7 @@ from django.core.urlresolvers import reverse
 from django.contrib.auth.decorators import login_required
 from django.http import Http404, HttpResponseRedirect
 from django.shortcuts import render
+from django.utils import timezone
 
 from conversate import settings, utils, models, forms
 from conversate.decorators import room_required
@@ -132,7 +133,7 @@ def _mail_alert(request, room):
     """
     Send any mail alerts
     """
-    now = datetime.datetime.now()
+    now = timezone.now()
     for room_user in models.RoomUser.objects.filter(room=room):
         if room_user.can_mail_alert(now):
             send_mail(
@@ -159,7 +160,7 @@ def _room_users(room, user):
     """
     Internal function to get a list of other room users
     """
-    now = datetime.datetime.now()
+    now = timezone.now()
     room_users = []
     for room_user in models.RoomUser.objects.filter(room=room):
         # Calc last seen/spoke
@@ -168,7 +169,7 @@ def _room_users(room, user):
         if room_user.last_seen:
             last_seen_delta = now - room_user.last_seen
             last_seen = last_seen_delta.seconds + (last_seen_delta.days * 24 * 60 * 60)
-        if room_user.last_seen:
+        if room_user.last_spoke:
             last_spoke_delta = now - room_user.last_spoke
             last_spoke = last_spoke_delta.seconds + (last_spoke_delta.days * 24 * 60 * 60)
         
@@ -189,7 +190,7 @@ def _update_room_user(request, room, has_focus=False, spoke=False):
     except models.RoomUser.DoesNotExist:
         # Must be a superuser snooping
         return None
-    now = datetime.datetime.now()
+    now = timezone.now()
     room_user.last_seen = now
     room_user.inactive_from = now + datetime.timedelta(seconds=settings.DISCONNECT_AT)
     if spoke:

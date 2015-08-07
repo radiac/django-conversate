@@ -1,14 +1,15 @@
 {% extends "base.html" %}
+{% load static from staticfiles %}
 
 {% block css %}
-<link rel="stylesheet" href="{{ STATIC_URL }}conversate/css/styles.css" type="text/css" />
+<link rel="stylesheet" href="{% static "conversate/css/styles.css" %}" type="text/css" />
 {{ block.super }}
 {% endblock %}
 
 {% block js %}
 {{ block.super }}
 {% if conversate_settings.add_jquery %}
-<script src="{{ STATIC_URL }}conversate/js/jquery-1.10.2.min.js"></script>
+<script src="{% static "conversate/js/jquery-1.11.3.min.js" %}"></script>
 {% endif %}
 <script>CONVERSATE={{ conversate_settings.config|safe }};</script>
 {% endblock %}

@@ -1,9 +1,10 @@
 {% extends "conversate/base.html" %}
+{% load static from staticfiles %}
 {% load conversate %}
 
 {% block js %}
 {{ block.super }}
-<script src="{{ STATIC_URL }}conversate/js/room.js"></script>
+<script src="{% static "conversate/js/room.js" %}"></script>
 {% endblock %}
 
 

@@ -2,11 +2,11 @@
 Conversate utils
 """
 import time
+import json
 
 from django.core.serializers.json import DjangoJSONEncoder
 from django.core.urlresolvers import reverse
 from django.http import HttpResponse
-from django.utils import simplejson
 
 from conversate import settings
 
@@ -16,8 +16,8 @@ def jsonResponse(data):
     Return a JSON HttpResponse
     """
     return HttpResponse(
-        simplejson.dumps(data, cls=DjangoJSONEncoder),
-        mimetype='application/json',
+        json.dumps(data, cls=DjangoJSONEncoder),
+        content_type='application/json',
     )
 
 def get_template_settings(
@@ -53,5 +53,5 @@ def get_template_settings(
     
     return {
         'add_jquery':   settings.ADD_JQUERY,
-        'config':       simplejson.dumps(config, cls=DjangoJSONEncoder),
+        'config':       json.dumps(config, cls=DjangoJSONEncoder),
     }
