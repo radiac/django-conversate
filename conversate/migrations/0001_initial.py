@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-import datetime
+from south.utils import datetime_utils as datetime
 from south.db import db
 from south.v2 import SchemaMigration
 from django.db import models
@@ -13,26 +13,31 @@ class Migration(SchemaMigration):
             (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
             ('title', self.gf('django.db.models.fields.CharField')(max_length=255)),
             ('slug', self.gf('django.db.models.fields.SlugField')(unique=True, max_length=50)),
-            ('latest', self.gf('django.db.models.fields.DateTimeField')(null=True, blank=True)),
-            ('latest_timestamp', self.gf('django.db.models.fields.FloatField')(null=True, blank=True)),
         ))
         db.send_create_signal(u'conversate', ['Room'])
 
-        # Adding M2M table for field users on 'Room'
-        m2m_table_name = db.shorten_name(u'conversate_room_users')
-        db.create_table(m2m_table_name, (
-            ('id', models.AutoField(verbose_name='ID', primary_key=True, auto_created=True)),
-            ('room', models.ForeignKey(orm[u'conversate.room'], null=False)),
-            ('user', models.ForeignKey(orm[u'auth.user'], null=False))
+        # Adding model 'RoomUser'
+        db.create_table(u'conversate_roomuser', (
+            (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
+            ('room', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['conversate.Room'])),
+            ('user', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['auth.User'])),
+            ('last_seen', self.gf('django.db.models.fields.DateTimeField')(null=True, blank=True)),
+            ('has_focus', self.gf('django.db.models.fields.BooleanField')(default=False)),
+            ('last_spoke', self.gf('django.db.models.fields.DateTimeField')(null=True, blank=True)),
+            ('inactive_from', self.gf('django.db.models.fields.DateTimeField')(null=True, blank=True)),
+            ('last_mail_alert', self.gf('django.db.models.fields.DateTimeField')(null=True, blank=True)),
+            ('colour', self.gf('django.db.models.fields.CharField')(default='000000', max_length=6)),
+            ('alert', self.gf('django.db.models.fields.BooleanField')(default=True)),
+            ('mail_alert', self.gf('django.db.models.fields.BooleanField')(default=False)),
         ))
-        db.create_unique(m2m_table_name, ['room_id', 'user_id'])
+        db.send_create_signal(u'conversate', ['RoomUser'])
 
         # Adding model 'Message'
         db.create_table(u'conversate_message', (
             (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('room', self.gf('django.db.models.fields.related.ForeignKey')(related_name='room', to=orm['conversate.Room'])),
+            ('room', self.gf('django.db.models.fields.related.ForeignKey')(related_name='messages', to=orm['conversate.Room'])),
             ('user', self.gf('django.db.models.fields.related.ForeignKey')(related_name='conversate_messages', to=orm['auth.User'])),
-            ('timestamp', self.gf('django.db.models.fields.FloatField')()),
+            ('timestamp', self.gf('django.db.models.fields.IntegerField')()),
             ('content', self.gf('django.db.models.fields.TextField')()),
         ))
         db.send_create_signal(u'conversate', ['Message'])
@@ -42,8 +47,8 @@ class Migration(SchemaMigration):
         # Deleting model 'Room'
         db.delete_table(u'conversate_room')
 
-        # Removing M2M table for field users on 'Room'
-        db.delete_table(db.shorten_name(u'conversate_room_users'))
+        # Deleting model 'RoomUser'
+        db.delete_table(u'conversate_roomuser')
 
         # Deleting model 'Message'
         db.delete_table(u'conversate_message')
@@ -90,18 +95,30 @@ class Migration(SchemaMigration):
             'Meta': {'ordering': "('timestamp',)", 'object_name': 'Message'},
             'content': ('django.db.models.fields.TextField', [], {}),
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'room': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "'room'", 'to': u"orm['conversate.Room']"}),
-            'timestamp': ('django.db.models.fields.FloatField', [], {}),
+            'room': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "'messages'", 'to': u"orm['conversate.Room']"}),
+            'timestamp': ('django.db.models.fields.IntegerField', [], {}),
             'user': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "'conversate_messages'", 'to': u"orm['auth.User']"})
         },
         u'conversate.room': {
-            'Meta': {'ordering': "('latest',)", 'object_name': 'Room'},
+            'Meta': {'ordering': "('title',)", 'object_name': 'Room'},
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'latest': ('django.db.models.fields.DateTimeField', [], {'null': 'True', 'blank': 'True'}),
-            'latest_timestamp': ('django.db.models.fields.FloatField', [], {'null': 'True', 'blank': 'True'}),
             'slug': ('django.db.models.fields.SlugField', [], {'unique': 'True', 'max_length': '50'}),
             'title': ('django.db.models.fields.CharField', [], {'max_length': '255'}),
-            'users': ('django.db.models.fields.related.ManyToManyField', [], {'related_name': "'conversate_rooms'", 'symmetrical': 'False', 'to': u"orm['auth.User']"})
+            'users': ('django.db.models.fields.related.ManyToManyField', [], {'related_name': "'conversate_rooms'", 'symmetrical': 'False', 'through': u"orm['conversate.RoomUser']", 'to': u"orm['auth.User']"})
+        },
+        u'conversate.roomuser': {
+            'Meta': {'ordering': "('room', 'user__username')", 'object_name': 'RoomUser'},
+            'alert': ('django.db.models.fields.BooleanField', [], {'default': 'True'}),
+            'colour': ('django.db.models.fields.CharField', [], {'default': "'000000'", 'max_length': '6'}),
+            'has_focus': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
+            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'inactive_from': ('django.db.models.fields.DateTimeField', [], {'null': 'True', 'blank': 'True'}),
+            'last_mail_alert': ('django.db.models.fields.DateTimeField', [], {'null': 'True', 'blank': 'True'}),
+            'last_seen': ('django.db.models.fields.DateTimeField', [], {'null': 'True', 'blank': 'True'}),
+            'last_spoke': ('django.db.models.fields.DateTimeField', [], {'null': 'True', 'blank': 'True'}),
+            'mail_alert': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
+            'room': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['conversate.Room']"}),
+            'user': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['auth.User']"})
         }
     }
 

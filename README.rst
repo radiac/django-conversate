@@ -37,7 +37,7 @@ Requirements
 
 These packages are required:
 
-* Django >= 1.3
+* Django >= 1.4
 
 
 It is recommended that you use ``South`` to manage schema migrations, as future

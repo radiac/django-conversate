@@ -21,14 +21,14 @@ setup(
         'Intended Audience :: Developers',
         'License :: OSI Approved :: BSD License',
         'Operating System :: OS Independent',
-        'Programming Language :: Python',
+        'Programming Language :: Python :: 2',
+        'Programming Language :: Python :: 2.7',
         'Framework :: Django',
+        'Framework :: Django :: 1.4',
+        'Framework :: Django :: 1.5',
+        'Framework :: Django :: 1.6',
     ],
-    
     zip_safe=True,
-    install_requires=[
-        'Django>=1.3.0',
-    ],
     packages=find_packages(),
     include_package_data=True,
 )
