@@ -27,8 +27,10 @@ setup(
         'Framework :: Django :: 1.4',
         'Framework :: Django :: 1.5',
         'Framework :: Django :: 1.6',
+        'Framework :: Django :: 1.7',
+        'Framework :: Django :: 1.8',
     ],
     zip_safe=True,
-    packages=find_packages(),
+    packages=find_packages(exclude=('example*',)),
     include_package_data=True,
 )

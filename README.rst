@@ -2,8 +2,8 @@
 Conversate - Persistant chat for Django
 =======================================
 
-A simple lightweight messaging app for django sites, where users may not always
-be around at the same time.
+A simple lightweight persistent chat app for Django sites, where users may not
+always be around at the same time.
 
 Requiring nothing other than a working Django installation, messages can be
 left for users to pick up later, users can opt in to receive e-mail alerts of
@@ -31,6 +31,8 @@ which are often asynchronous; because each poll event will create a new HTTP
 connection, installations where a large number of concurrent users are expected
 should look for a different solution involving long-polling and websockets.
 
+There is an example site in the ``example`` directory.
+
 
 Requirements
 ============
@@ -40,8 +42,9 @@ These packages are required:
 * Django >= 1.4
 
 
-It is recommended that you use ``South`` to manage schema migrations, as future
-versions of Conversate will need changes to the database.
+If using a version of Django earlier than 1.7, it is recommended that you use
+``South`` to manage schema migrations, as future versions of Conversate will
+need changes to the database.
 
 
 Installation
@@ -65,6 +68,10 @@ Installation
     
    You may also want to change some settings here (see `Settings`_ below)
    
+   If using Django 1.6 or earlier with South, you will need to change
+   ``SOUTH_MIGRATION_MODULES`` to
+   ``{'conversate': 'conversate.south_migrations'}``.
+
 3. Include the URLconf in your project's urls.py::
 
     url(r'^conversate/', include('conversate.urls')),
@@ -74,12 +81,11 @@ Installation
    will also want to create a link somewhere to ``conversate-index`` (or
    ``conversate.views.index``) so users can access it.
 
-5. Add the models to the database using South::
+5. Add the models to the database::
 
     python manage.py migrate conversate
 
-   If you don't have South, you will use ``python manage.py syncdb``, and
-   later regret your decision
+   If using South, make sure you set 
 
 
 Settings
