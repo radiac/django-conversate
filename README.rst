@@ -50,9 +50,9 @@ need changes to the database.
 Installation
 ============
 
-1. Install ``django-conversate``::
+1. Install ``django-conversate`` (currently only on github)::
 
-    pip install -e ...
+    pip install -e git+https://github.com/radiac/django-conversate.git#egg=django-conversate
 
    Note: The master branch may sometimes contain minor changes made since the
    version was incremented. These changes will be listed in
@@ -156,8 +156,8 @@ They will expect the following blocks:
 * ``title`` for inserting the title (plain text) - or ``{{ title }}`` instead
 * ``content`` for the body content
 
-You will need to add these to your base.html template. Alternatively, if you
-already have the blocks but with different names, create
+You will need to add these to your ``base.html`` template. Alternatively, if
+you already have the blocks but with different names, create
 ``conversate/base.html`` in your own templates folder and map them; for
 example::
 
@@ -173,6 +173,8 @@ element in your site's base template must:
 * have css position either relative or absolute
 * have an explicit height if ``CONVERSATE_LAYOUT_FIXED`` is False, otherwise
   it must expect its height to be controlled by conversate.
+
+There is a simple layout example in the ``example`` project in the git root.
 
 There is a single global JavaScript variable used, ``CONVERSATE``, which the
 template uses to pass settings and variables to the JavaScript.

@@ -15,6 +15,7 @@ Roadmap
 Target
 0.2.x       Improve room.updateTimes to eventually update older entries
             Admin option to clear room without deleting it
+            Admin option to make a room public, so users can add themselves
             User options
             * Separate flash and title visual alerts into two options
             * Provide custom e-mail address for alerts
