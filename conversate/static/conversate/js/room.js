@@ -485,7 +485,7 @@ $('document').ready(function () {
             
             // Make request
             var thisRoom = this;
-            data['last'] = this.last;
+            data['last'] = this.last || 0;
             data['csrfmiddlewaretoken'] = this.csrfToken;
             data['hasFocus'] = this.status.hasFocus;
             $.ajax({
