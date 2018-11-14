@@ -1,6 +1,6 @@
 from django import forms
 
-from conversate import models
+from . import models
 
 
 class MessageForm(forms.ModelForm):

@@ -7,9 +7,9 @@ import time
 from django.core.mail import send_mail
 from django.core.urlresolvers import reverse
 from django.contrib.auth.decorators import login_required
-from django.http import Http404, HttpResponseRedirect
+from django.http import Http404, HttpResponseRedirect, JsonResponse
 from django.shortcuts import render
-from django.utils import timezone
+from django.utils import timezone, html
 
 from conversate import settings, utils, models, forms
 from conversate.decorators import room_required
@@ -24,7 +24,7 @@ def index(request):
         rooms = models.Room.objects.all()
     else:
         rooms = request.user.conversate_rooms.all()
-    
+
     return render(request, 'conversate/index.html', {
         'conversate_settings': utils.get_template_settings(),
         'title':    'Rooms',
@@ -40,20 +40,20 @@ def room(request, room, room_slug):
     # Get room messages
     room_user = _update_room_user(request, room)
     messages = room.messages.all()
-    
+
     # Paginate
     msg_count = messages.count()
     remaining = 0
     if msg_count > settings.PAGE_SIZE:
         remaining = msg_count - settings.PAGE_SIZE
         messages = messages[remaining:]
-    
+
     # Need all messages now, force lookup
     # Need last message for javascript
     messages = list(messages)
     first_message = messages[0] if len(messages) > 0 else None
     last_message = messages[-1] if len(messages) > 0 else None
-    
+
     return render(request, 'conversate/room.html', {
         'conversate_settings': utils.get_template_settings(
             room, room_user, extra={
@@ -85,12 +85,12 @@ def send(request, room, room_slug):
             message.user = request.user
             message.save()
             spoke = True
-            
+
     _update_room_user(request, room, spoke=spoke)
     _mail_alert(request, room)
-    
+
     return HttpResponseRedirect(
-        reverse('conversate-room', kwargs={'room_slug': room_slug})
+        reverse('conversate:room', kwargs={'room_slug': room_slug})
     )
 
 @room_required
@@ -105,9 +105,9 @@ def update_settings(request, room, room_slug):
             for key, val in form.cleaned_data.items():
                 setattr(room_user, key, val)
             room_user.save()
-    
+
     return HttpResponseRedirect(
-        reverse('conversate-room', kwargs={'room_slug': room_slug})
+        reverse('conversate:room', kwargs={'room_slug': room_slug})
     )
 
 @room_required
@@ -128,7 +128,7 @@ def api_check(request, room, room_slug):
         request, room, room_slug,
         last_pk=request.POST.get('last', None)
     )
-    
+
 def _mail_alert(request, room):
     """
     Send any mail alerts
@@ -145,7 +145,10 @@ def _mail_alert(request, room):
                 ) % {
                     'room': room,
                     'url':  request.build_absolute_uri(
-                        reverse('conversate-room', kwargs={'room_slug': room.slug})
+                        reverse(
+                            'conversate:room',
+                            kwargs={'room_slug': room.slug},
+                        )
                     ),
                 },
                 settings.EMAIL_FROM,
@@ -172,7 +175,7 @@ def _room_users(room, user):
         if room_user.last_spoke:
             last_spoke_delta = now - room_user.last_spoke
             last_spoke = last_spoke_delta.seconds + (last_spoke_delta.days * 24 * 60 * 60)
-        
+
         room_users.append({
             'username': room_user.user.username,
             'active':       room_user.is_active(now=now),
@@ -182,7 +185,7 @@ def _room_users(room, user):
             'colour':       room_user.colour,
         })
     return room_users
-    
+
 def _update_room_user(request, room, has_focus=False, spoke=False):
     # Update user's last seen
     try:
@@ -198,21 +201,21 @@ def _update_room_user(request, room, has_focus=False, spoke=False):
     room_user.has_focus = has_focus
     room_user.save()
     return room_user
-    
+
 def _api_check(request, room, room_slug, last_pk, spoke=False):
     """
     Interal function to check for new messages and return a json response
     """
     if not last_pk:
-        return utils.jsonResponse({
+        return JsonResponse({
             'success':  False,
             'error':    'No pointer provided',
         })
-        
+
     # Register the ping
     has_focus = request.POST.get('hasFocus', 'false') == 'true'
     _update_room_user(request, room, has_focus, spoke)
-    
+
     # Prep list of messages
     messages = list(room.messages.filter(pk__gt=last_pk))
     data = [
@@ -220,11 +223,11 @@ def _api_check(request, room, room_slug, last_pk, spoke=False):
             'pk':   msg.pk,
             'time': msg.timestamp,
             'user': msg.user.username,
-            'content':  msg.content,
+            'content':  html.escape(msg.content),
         } for msg in messages
     ]
-    
-    return utils.jsonResponse({
+
+    return JsonResponse({
         'success':  True,
         'last':     last_pk if not messages else messages[-1].pk,
         'time':     int(time.time()),
@@ -245,7 +248,7 @@ def api_send(request, room, room_slug):
             message.room = room
             message.user = request.user
             message.save()
-            
+
             # Get response and update users before sending mail alerts
             response = _api_check(
                 request, room, room_slug,
@@ -253,14 +256,14 @@ def api_send(request, room, room_slug):
                 spoke=True,
             )
             _mail_alert(request, room)
-            
+
             return response
         else:
             error = 'Invalid message'
     else:
         error = 'Invalid request'
-    
-    return utils.jsonResponse({
+
+    return JsonResponse({
         'success':  False,
         'error':    error,
     })
@@ -270,14 +273,14 @@ def api_send(request, room, room_slug):
 def api_history(request, room, room_slug):
     first_pk = request.POST.get('first', None)
     messages = room.messages.filter(pk__lt=first_pk)
-    
+
     # Paginate
     msg_count = messages.count()
     remaining = 0
     if msg_count > settings.PAGE_SIZE:
         remaining = msg_count - settings.PAGE_SIZE
         messages = messages[remaining:]
-    
+
     # Need all messages now, force lookup
     # Need last message for javascript
     messages = list(messages)
@@ -287,11 +290,11 @@ def api_history(request, room, room_slug):
             'pk':   msg.pk,
             'time': msg.timestamp,
             'user': msg.user.username,
-            'content':  msg.content,
+            'content':  html.escape(msg.content),
         } for msg in messages
     ]
-    
-    return utils.jsonResponse({
+
+    return JsonResponse({
         'success':  True,
         'first':    first_message.pk,
         'remaining':    remaining,

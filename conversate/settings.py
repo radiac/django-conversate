@@ -1,5 +1,6 @@
 from django.conf import settings
 
+
 # If true, add jQuery to the page when required
 ADD_JQUERY = getattr(settings, 'CONVERSATE_ADD_JQUERY', True)
 

@@ -6,7 +6,7 @@ from django.contrib.auth.decorators import user_passes_test
 from django.core.exceptions import PermissionDenied
 from django.shortcuts import get_object_or_404
 
-from conversate import models
+from . import models
 
 
 def room_required(fn):
@@ -18,12 +18,12 @@ def room_required(fn):
     """
     def wrapper(request, *args, **kwargs):
         room = get_object_or_404(models.Room, slug=kwargs.get('room_slug', None))
-        
+
         # Check logged in
         if not request.user.is_authenticated():
             # Make auth decorator fail to force user to login form
             return user_passes_test(lambda u: False)(lambda r:None)(request)
-            
+
         # Check permission
         if (not request.user.is_superuser
             and request.user.conversate_rooms.filter(slug=room.slug).count() == 0

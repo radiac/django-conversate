@@ -8,6 +8,12 @@ from django.db import models
 from django.core.urlresolvers import reverse
 from django.utils import timezone
 
+try:
+    from django.contrib.auth import get_user_model
+    User = get_user_model()
+except ImportError:
+    from django.contrib.auth.models import User
+
 
 class Room(models.Model):
     title   = models.CharField(
@@ -17,26 +23,26 @@ class Room(models.Model):
         unique=True, help_text="Slug for the room",
     )
     users   = models.ManyToManyField(
-        'auth.User', through='RoomUser', related_name='conversate_rooms',
+        User, through='RoomUser', related_name='conversate_rooms',
     )
 
     class Meta:
         ordering = ('title',)
-        
-    def __unicode__(self):
+
+    def __str__(self):
         return u'%s' % self.title
-    
+
     def get_absolute_url(self):
         return reverse(
-            'conversate-room',
+            'conversate:room',
             kwargs={'room_slug': self.slug}
         )
-    
+
 
 class RoomUser(models.Model):
     room        = models.ForeignKey(Room)
-    user        = models.ForeignKey('auth.User')
-    
+    user        = models.ForeignKey(User)
+
     # State
     last_seen   = models.DateTimeField(
         blank=True, null=True, help_text="Last seen",
@@ -53,7 +59,7 @@ class RoomUser(models.Model):
     last_mail_alert = models.DateTimeField(
         blank=True, null=True, help_text="Last time a mail alert was sent",
     )
-    
+
     # Preferences
     colour      = models.CharField(
         max_length=6, help_text="Hex colour code", default="000000",
@@ -67,21 +73,21 @@ class RoomUser(models.Model):
 
     class Meta:
         ordering = ('room', 'user__username',)
-        
-    def __unicode__(self):
+
+    def __str__(self):
         return u'%s/%s' % (self.room, self.user)
-    
+
     def is_active(self, now=None):
         if not now:
             now = timezone.now()
         if self.inactive_from and self.inactive_from >= now:
             return True
         return False
-        
+
     def can_mail_alert(self, now=None):
         if not now:
             now = timezone.now()
-        
+
         if (self.mail_alert
             and self.user.email
             and not self.is_active(now)
@@ -92,16 +98,16 @@ class RoomUser(models.Model):
 
 class Message(models.Model):
     room        = models.ForeignKey(Room, related_name='messages')
-    user        = models.ForeignKey('auth.User', related_name='conversate_messages')
+    user        = models.ForeignKey(User, related_name='conversate_messages')
     timestamp   = models.IntegerField()
     content     = models.TextField()
-    
+
     class Meta:
         ordering = ('timestamp',)
-    
-    def __unicode__(self):
+
+    def __str__(self):
         return u'%s/%s %s' % (self.room, self.user, self.timestamp)
-    
+
     def save(self, *args, **kwargs):
         """
         Force timestamp to now

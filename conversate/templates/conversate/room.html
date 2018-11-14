@@ -1,5 +1,5 @@
 {% extends "conversate/base.html" %}
-{% load static from staticfiles %}
+{% load static %}
 {% load conversate %}
 
 {% block js %}
@@ -11,8 +11,8 @@
 {% block conversate_content %}
 
     <div class="cnv_input">
-        
-        <form method="POST" action="{% url "conversate-send" room_slug=room.slug %}" class="cnv_form" autocomplete="off">
+
+        <form method="POST" action="{% url "conversate:send" room_slug=room.slug %}" class="cnv_form" autocomplete="off">
         {% csrf_token %}
         <table class="cnv_table">
         <tr>
@@ -22,9 +22,9 @@
         </tr>
         </table>
         </form>
-        
+
     </div>
-    
+
     <aside class="cnv_sidebar">
         <h1>Users</h1>
         <table class="cnv_users">
@@ -32,9 +32,9 @@
             <tr class="cnv_{% if user.active %}{% if user.has_focus%}active{% else %}afk{% endif %}{% else %}inactive{% endif %} cnv_user_{{ user.username }}"><th>{{ user.username }}</th><td title="Last ping: {{ user.last_seen|naturaltimedelta }}">{{ user.last_spoke|naturaltimedelta }}</td></tr>
             {% endfor %}
         </table>
-        
+
         <h1>Settings</h1>
-        <form method="POST" action="{% url "conversate-settings" room_slug=room.slug %}" class="cnv_form" autocomplete="off">
+        <form method="POST" action="{% url "conversate:settings" room_slug=room.slug %}" class="cnv_form" autocomplete="off">
         {% csrf_token %}
         <div class="cnv_settings">
             {{ settings.as_p }}
@@ -44,16 +44,16 @@
         </div>
         </form>
     </aside>
-    
+
     <section class="cnv_msgs">
         <table class="cnv_table">
-            
+
             <tr>
                 <td class="cnv_time" width="75">&nbsp;</td>
                 <td class="cnv_user" width="75">&nbsp;</td>
                 <td class="cnv_content">{% if remaining == 0 %}No older messages{% else %}Older messages hidden{% endif %}</td>
             </tr>
-            
+
             {% for message in room_messages %}
             <tr class="cnv_user_{{ message.user.username }}">
                 <td class="cnv_time" data-time="{{ message.timestamp }}">{{ message.timestamp|naturaltimestamp }}</td>
@@ -63,7 +63,7 @@
             {% endfor %}
         </table>
     </section>
-    
+
 <style>
 {% for user in room_users %}
     tr.cnv_user_{{ user.username }} th,

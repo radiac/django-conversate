@@ -2,8 +2,27 @@
 Django Conversate Changes
 =========================
 
+
+Upgrading
+=========
+
+Upgrading from 0.1.0
+--------------------
+
+* Add a namespace to your url import.
+* Only tested on Django 1.11 under Python 3.5. Patches to improve compatibility
+  are welcome.
+
+
 Changelog
 =========
+
+0.2.0       2018-11-
+            Change:     Minimum Django requirement now 1.11
+            Change:     Requires Python 3.5
+            Change:     Urls now namespaced
+            Change:     Times are now timezone aware
+            Change:     South migrations are removed
 
 0.1.0       2015-08-07
             Feature:    Initial release
@@ -13,7 +32,7 @@ Roadmap
 =======
 
 Target
-0.2.x       Improve room.updateTimes to eventually update older entries
+0.3.x       Improve room.updateTimes to eventually update older entries
             Admin option to clear room without deleting it
             Admin option to make a room public, so users can add themselves
             User options
@@ -21,6 +40,6 @@ Target
             * Provide custom e-mail address for alerts
             * Set alert time ranges
             * Colour picker
-0.3.0       Support for long-polling and websockets
+0.4.0       Support for long-polling and websockets
 
 The roadmap is subject to change; let me know if something is important to you.

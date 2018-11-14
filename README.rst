@@ -21,7 +21,7 @@ Features
 * Users can opt in to receive e-mail alerts of activity when away
 * Support for users without javascript
 
-Version 0.1.0
+Version 0.2.0
 
 * See `CHANGES <CHANGES>`_ for full changelog and roadmap
 * See `UPGRADE <UPGRADE.rst>`_ for how to upgrade from earlier releases
@@ -37,14 +37,9 @@ There is an example site in the ``example`` directory.
 Requirements
 ============
 
-These packages are required:
+This has been tested on Django 1.11 using Python 3.5.
 
-* Django >= 1.4
-
-
-If using a version of Django earlier than 1.7, it is recommended that you use
-``South`` to manage schema migrations, as future versions of Conversate will
-need changes to the database.
+For earlier versions, see the 0.1.0 release.
 
 
 Installation
@@ -65,16 +60,12 @@ Installation
         ...
         'conversate',
     )
-    
+
    You may also want to change some settings here (see `Settings`_ below)
-   
-   If using Django 1.6 or earlier with South, you will need to change
-   ``SOUTH_MIGRATION_MODULES`` to
-   ``{'conversate': 'conversate.south_migrations'}``.
 
 3. Include the URLconf in your project's urls.py::
 
-    url(r'^conversate/', include('conversate.urls')),
+    url(r'^conversate/', include('conversate.urls', namespace='conversate')),
 
 4. Make sure your ``base.html`` template has the necessary blocks, or override
    Conversate's base, ``conversate/base.html`` (see `Templates`_ below). You
@@ -84,8 +75,6 @@ Installation
 5. Add the models to the database::
 
     python manage.py migrate conversate
-
-   If using South, make sure you set 
 
 
 Settings
@@ -100,8 +89,8 @@ Add these settings to your ``settings.py`` file to override the defaults.
 
 ``CONVERSATE_PAGE_SIZE``
     Number of lines to show on a page
-    
-    Default: ``100`
+
+    Default: ``100``
 
 ``CONVERSATE_IDLE_AT``:
     The time until the UI decides that the user is idle (in ms)
@@ -110,17 +99,17 @@ Add these settings to your ``settings.py`` file to override the defaults.
 
 ``CONVERSATE_POLL_MIN``:
     Minimum poll interval (in ms)
-    
+
     Default: ``5 * 1000``
 
 ``CONVERSATE_POLL_MAX``:
     Maximum poll interval (in ms)
-    
+
     Default: ``60 * 1000``
 
 ``CONVERSATE_POLL_STEP``:
     Amount to increase poll interval by when there is no activity (in ms)
-    
+
     Default: ``5 * 1000``
 
 ``CONVERSATE_CONTROL_LAYOUT``:
@@ -129,17 +118,17 @@ Add these settings to your ``settings.py`` file to override the defaults.
     * maximises container element's height into available space in the window
     * makes the conversation scroll in place
     * moves the input field to the bottom of the container
-    
+
     Default: ``True``
 
 ``CONVERSATE_DISCONNECT_AT``:
     How long before marking the user as disconnected (in secs)
-    
+
     Defaults to POLL_MAX plus 30 seconds, ``60 + 30``
 
 ``CONVERSATE_EMAIL_FROM``:
     From address for alert e-mails
-    
+
     Default: ``DEFAULT_FROM_EMAIL`` (from main Django settings)
 
 

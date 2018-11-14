@@ -1,46 +1,59 @@
 """
 Conversate URLs
 """
+from django.conf.urls import url
 
-try:
-    from django.conf.urls import include, patterns, url
-except ImportError:
-    from django.conf.urls.defaults import include, patterns, url
+from . import views
 
 
-urlpatterns = patterns('conversate.views',
-    url(r'^$',
-        'index', name='conversate-index',
+urlpatterns = [
+    url(
+        r'^$',
+        views.index,
+        name='index',
     ),
-    
-    url(r'^(?P<room_slug>[-\w]+)/$',
-        'room', name='conversate-room',
+
+    url(
+        r'^(?P<room_slug>[-\w]+)/$',
+        views.room,
+        name='room',
     ),
-    
-    url(r'^(?P<room_slug>[-\w]+)/send/$',
-        'send', name='conversate-send',
+
+    url(
+        r'^(?P<room_slug>[-\w]+)/send/$',
+        views.send,
+        name='send',
     ),
-    
-    url(r'^(?P<room_slug>[-\w]+)/settings/$',
-        'update_settings', name='conversate-settings',
+
+    url(
+        r'^(?P<room_slug>[-\w]+)/settings/$',
+        views.update_settings,
+        name='settings',
     ),
-    
-    
+
+
     #
     # JSON API
     #
-    
-    url(r'^(?P<room_slug>[-\w]+)/api/$',
-        'api_base', name='conversate-api_base',
+
+    url(
+        r'^(?P<room_slug>[-\w]+)/api/$',
+        views.api_base,
+        name='api_base',
     ),
-    url(r'^(?P<room_slug>[-\w]+)/api/poll/$',
-        'api_check', name='conversate-api_check',
+    url(
+        r'^(?P<room_slug>[-\w]+)/api/poll/$',
+        views.api_check,
+        name='api_check',
     ),
-    url(r'^(?P<room_slug>[-\w]+)/api/send/$',
-        'api_send', name='conversate-api_send',
+    url(
+        r'^(?P<room_slug>[-\w]+)/api/send/$',
+        views.api_send,
+        name='api_send',
     ),
-    url(r'^(?P<room_slug>[-\w]+)/api/history/$',
-        'api_history', name='conversate-api_history',
+    url(
+        r'^(?P<room_slug>[-\w]+)/api/history/$',
+        views.api_history,
+        name='api_history',
     ),
-    
-)
+]
