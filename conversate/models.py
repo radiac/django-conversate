@@ -112,5 +112,6 @@ class Message(models.Model):
         """
         Force timestamp to now
         """
-        self.timestamp = int(time.time())
+        if not self.timestamp:
+            self.timestamp = int(time.time())
         super(Message, self).save(*args, **kwargs)

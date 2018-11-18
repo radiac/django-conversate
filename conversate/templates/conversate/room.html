@@ -1,6 +1,5 @@
 {% extends "conversate/base.html" %}
 {% load static %}
-{% load conversate %}
 
 {% block js %}
 {{ block.super }}
@@ -9,69 +8,22 @@
 
 
 {% block conversate_content %}
-
-    <div class="cnv_input">
-
-        <form method="POST" action="{% url "conversate:send" room_slug=room.slug %}" class="cnv_form" autocomplete="off">
-        {% csrf_token %}
-        <table class="cnv_table">
-        <tr>
-            <td class="cnv_time" width="75"><input type="submit" value="Send"></td>
-            <td class="cnv_user" width="75">{{ request.user.username }}</td>
-            <td class="cnv_content">{{ form.content }}</td>
-        </tr>
-        </table>
-        </form>
-
-    </div>
-
+<section class="cnv_container">
+    <input type="checkbox" id="cnv_sidebar__toggler">
+    <label for="cnv_sidebar__toggler">Toggle menu</label>
     <aside class="cnv_sidebar">
-        <h1>Users</h1>
-        <table class="cnv_users">
-            {% for user in room_users %}
-            <tr class="cnv_{% if user.active %}{% if user.has_focus%}active{% else %}afk{% endif %}{% else %}inactive{% endif %} cnv_user_{{ user.username }}"><th>{{ user.username }}</th><td title="Last ping: {{ user.last_seen|naturaltimedelta }}">{{ user.last_spoke|naturaltimedelta }}</td></tr>
-            {% endfor %}
-        </table>
-
-        <h1>Settings</h1>
-        <form method="POST" action="{% url "conversate:settings" room_slug=room.slug %}" class="cnv_form" autocomplete="off">
-        {% csrf_token %}
-        <div class="cnv_settings">
-            {{ settings.as_p }}
-        </div>
-        <div class="cnv_submit">
-            <input type="submit" value="Save">
-        </div>
-        </form>
+        {% include "conversate/includes/room_sidebar.html" %}
     </aside>
 
-    <section class="cnv_msgs">
-        <table class="cnv_table">
+    <section class="cnv_content">
+        <article class="cnv_messages">
+            {% include "conversate/includes/room_messages.html" %}
+        </article>
 
-            <tr>
-                <td class="cnv_time" width="75">&nbsp;</td>
-                <td class="cnv_user" width="75">&nbsp;</td>
-                <td class="cnv_content">{% if remaining == 0 %}No older messages{% else %}Older messages hidden{% endif %}</td>
-            </tr>
-
-            {% for message in room_messages %}
-            <tr class="cnv_user_{{ message.user.username }}">
-                <td class="cnv_time" data-time="{{ message.timestamp }}">{{ message.timestamp|naturaltimestamp }}</td>
-                <td class="cnv_user">{{ message.user.username }}</td>
-                <td class="cnv_content">{{ message.content }}</td>
-            </tr>
-            {% endfor %}
-        </table>
+        <footer class="cnv_input">
+            {% include "conversate/includes/room_input.html" %}
+        </footer>
     </section>
-
-<style>
-{% for user in room_users %}
-    tr.cnv_user_{{ user.username }} th,
-    tr.cnv_user_{{ user.username }} td.cnv_user,
-    tr.cnv_user_{{ user.username }} td.cnv_content {
-        color:  #{{ user.colour }};
-    }
-{% endfor %}
-</style>
+</section>
 
 {% endblock %}

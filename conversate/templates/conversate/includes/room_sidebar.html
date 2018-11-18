@@ -1,0 +1,43 @@
+{% load conversate %}
+
+<h1>Users</h1>
+<table class="cnv_users">
+    {% for user in room_users %}
+    <tr class="cnv_{% if user.active %}{% if user.has_focus%}active{% else %}afk{% endif %}{% else %}inactive{% endif %} cnv_user_{{ user.username }}"><th>{{ user.username }}</th><td title="Last ping: {{ user.last_seen|naturaltimedelta }}">{{ user.last_spoke|naturaltimedelta }}</td></tr>
+    {% endfor %}
+</table>
+
+<h1>Settings</h1>
+<form method="POST" action="{% url "conversate:settings" room_slug=room.slug %}" class="cnv_form" autocomplete="off">
+    {% csrf_token %}
+    <div class="cnv_settings">
+        {{ settings.as_p }}
+    </div>
+    <div class="cnv_submit">
+        <input type="submit" value="Save">
+    </div>
+</form>
+
+<style>
+{% for user in room_users %}
+    .cnv_users tr.cnv_user_{{ user.username }} th,
+    .cnv_content tr.cnv_user_{{ user.username }} td:nth-child(n+2) {
+        color: #{{ user.colour }};
+    }
+
+    @media all and (max-width:640px) {
+        .cnv_content tr.cnv_user_{{ user.username }} td:nth-child(3) {
+            color: #000;
+        }
+        .cnv_content tr:not(.cnv_user_{{ user.username }}) + tr.cnv_user_{{ user.username }} td {
+            border-bottom: 0;
+        }
+        .cnv_content tr.cnv_user_{{ user.username }} + tr.cnv_user_{{ user.username }} td {
+            border: 0;
+        }
+        .cnv_content tr.cnv_user_{{ user.username }} + tr.cnv_user_{{ user.username }} td:nth-child(-n+2) {
+            display: none;
+        }
+    }
+{% endfor %}
+</style>

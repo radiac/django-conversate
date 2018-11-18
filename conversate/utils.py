@@ -43,6 +43,5 @@ def get_template_settings(
         config[titled[:1].lower() + titled[1:]] = getattr(settings, setting)
 
     return {
-        'add_jquery':   settings.ADD_JQUERY,
         'config':       json.dumps(config, cls=DjangoJSONEncoder),
     }

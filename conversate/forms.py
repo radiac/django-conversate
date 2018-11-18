@@ -4,11 +4,18 @@ from . import models
 
 
 class MessageForm(forms.ModelForm):
+    use_required_attribute = False
+
     class Meta:
         model = models.Message
         fields = ['content']
         widgets = {
-            'content': forms.TextInput(attrs={'placeholder': 'Message'}),
+            'content': forms.Textarea(
+                attrs={
+                    'placeholder': 'Message',
+                    'rows': 1,
+                },
+            ),
         }
 
 

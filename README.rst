@@ -82,11 +82,6 @@ Settings
 
 Add these settings to your ``settings.py`` file to override the defaults.
 
-``CONVERSATE_ADD_JQUERY``:
-    If True, adds the bundled version of jQuery when required
-
-    Default: ``True``
-
 ``CONVERSATE_PAGE_SIZE``
     Number of lines to show on a page
 
@@ -157,13 +152,8 @@ example::
 
 Once you have mapped these blocks, the default settings and templates should
 work out of the box with most designs. However, the conversate container
-element in your site's base template must:
-
-* have css position either relative or absolute
-* have an explicit height if ``CONVERSATE_LAYOUT_FIXED`` is False, otherwise
-  it must expect its height to be controlled by conversate.
-
-There is a simple layout example in the ``example`` project in the git root.
+element in your site's base template should be given a fixed height and width
+to contain the chat interface.
 
 There is a single global JavaScript variable used, ``CONVERSATE``, which the
 template uses to pass settings and variables to the JavaScript.
@@ -182,3 +172,10 @@ Credits
 =======
 
 Thanks to all contributors, who are listed in CHANGES.
+
+This project's static files include bundled versions of:
+
+* jquery: https://jquery.com/
+* resize-observer-polyfill: https://github.com/que-etc/resize-observer-polyfill
+* markdown-it: https://github.com/markdown-it/markdown-it
+* markdown-it-slack: https://github.com/invisible-tech/markdown-it-slack

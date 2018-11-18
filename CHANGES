@@ -18,11 +18,13 @@ Changelog
 =========
 
 0.2.0       2018-11-
+            Feature:    Supports multi-line entry (shift+enter) and markdown
             Change:     Minimum Django requirement now 1.11
             Change:     Requires Python 3.5
             Change:     Urls now namespaced
             Change:     Times are now timezone aware
             Change:     South migrations are removed
+            Change:     Layout simplified to use flexbox
 
 0.1.0       2015-08-07
             Feature:    Initial release

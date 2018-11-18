@@ -1,0 +1,21 @@
+{% load conversate %}
+
+<div class="cnv_messages_inner">
+    <div class="cnv_table_con">
+        <table class="cnv_table">
+            <tr>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+                <td>{% if remaining == 0 %}No older messages{% else %}Older messages hidden{% endif %}</td>
+            </tr>
+
+            {% for message in room_messages %}
+            <tr class="cnv_user_{{ message.user.username }}">
+                <td data-time="{{ message.timestamp }}">{{ message.timestamp|naturaltimestamp }}</td>
+                <td>{{ message.user.username }}</td>
+                <td>{{ message.content }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+</div>

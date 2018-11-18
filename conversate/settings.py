@@ -1,9 +1,6 @@
 from django.conf import settings
 
 
-# If true, add jQuery to the page when required
-ADD_JQUERY = getattr(settings, 'CONVERSATE_ADD_JQUERY', True)
-
 # Number of lines to show on a page
 PAGE_SIZE = getattr(settings, 'CONVERSATE_PAGE_SIZE', 100)
 

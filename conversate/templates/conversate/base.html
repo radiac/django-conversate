@@ -8,15 +8,14 @@
 
 {% block js %}
 {{ block.super }}
-{% if conversate_settings.add_jquery %}
-<script src="{% static "conversate/js/jquery-1.11.3.min.js" %}"></script>
-{% endif %}
 <script>CONVERSATE={{ conversate_settings.config|safe }};</script>
 {% endblock %}
 
 {% block title %}{{ title }}{% endblock %}
 
 {% block content %}
-    {% block conversate_content %}
-    {% endblock %}
+    <div class="cnv_con">
+        {% block conversate_content %}
+        {% endblock %}
+    </div>
 {% endblock %}

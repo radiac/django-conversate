@@ -1,0 +1,49 @@
+{
+  "name": "conversate",
+  "version": "0.2.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "static_src/scripts/build.sh",
+    "build-js": "static_src/scripts/build-js.sh",
+    "build-css": "static_src/scripts/build-css.sh",
+    "watch": "static_src/scripts/watch.sh",
+    "watch-js": "static_src/scripts/watch-js.sh",
+    "watch-css": "static_src/scripts/watch-css.sh"
+  },
+  "dependencies": {
+    "autosize": "^4.0.2",
+    "babel-cli": "^6.26.0",
+    "babel-preset-env": "^1.6.1",
+    "babelify": "^8.0.0",
+    "browserify": "^14.5.0",
+    "include-media": "^1.4.9",
+    "jquery": "^3.3.1",
+    "markdown-it": "^8.4.2",
+    "markdown-it-slack": "^1.2.0",
+    "node-sass": "^4.7.2",
+    "resize-observer-polyfill": "^1.5.0"
+  },
+  "browserify": {
+    "transform": [
+      [
+        "babelify",
+        {
+          "presets": [
+            "env"
+          ]
+        }
+      ]
+    ]
+  },
+  "author": "Richard Terry",
+  "license": "BSD",
+  "devDependencies": {
+    "npm-run-all": "^4.1.2",
+    "uglify-js": "^3.3.22",
+    "uglifycss": "0.0.29",
+    "uglifyify": "^5.0.0",
+    "watchify": "^3.9.0"
+  }
+}

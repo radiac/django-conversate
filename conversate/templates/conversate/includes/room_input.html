@@ -1,0 +1,13 @@
+<table>
+    <tr>
+        <td>&nbsp;</td>
+        <td>&nbsp;</td>
+        <td>
+            <form method="POST" action="{% url "conversate:send" room_slug=room.slug %}" autocomplete="off">
+                {% csrf_token %}
+                {{ form.content }}
+                <input type="submit" value="Send">
+            </form>
+        </td>
+    </tr>
+</table>

@@ -2,3 +2,4 @@ __pycache__/
 *.pyc
 django_conversate.egg-info
 example/db.sqlite3
+node_modules/

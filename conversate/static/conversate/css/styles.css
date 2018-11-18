@@ -1,190 +1,111 @@
+@charset "UTF-8";
 /*
 ** CSS for Conversate
 ** All elements are prefixed with cnv_
 */
-
-
-/******************************************************************************
-**                                                            Unmanaged layout
-*/
-
-
-
-/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-**                                                              Message table
-*/
-
-.cnv_table {
-    width:  100%;
-    table-layout: fixed;
-    border-collapse:    collapse;
-}
-.cnv_table td {
-    font-size:  0.9em;
-    vertical-align:     top;
-    border-bottom:  1px solid #eee;
-    padding:    0 0.4em;
-    overflow:   hidden;
-    -moz-box-sizing: border-box;
-    -webkit-box-sizing: border-box;
-    box-sizing: border-box;
-}
-
-.cnv_table .cnv_time,
-.cnv_hourglass_note {
-    font-size:  0.625em;
-    color: #888;
-}
-.cnv_table .cnv_time {
-    /* Reverse font size 0.625em; 6*1.6 */
-    width:          9.6em;
-}
-.cnv_table .cnv_user {
-    border-right:   1px solid #eee;
-    width:          7em;
-}
-
-.cnv_table .cnv_time,
-.cnv_table .cnv_user {
-    white-space:    nowrap;
-    overflow:       hidden;
-    text-overflow:  ellipsis;
-}
-
-.cnv_table .cnv_content {
-    
-    word-wrap: break-word
-}
-
-.cnv_table tr.cnv_ERROR td {
-    color:  #fff;
-    background: #c00;
-}
-
-
-
-@media all and (max-width:640px) {
-    .cnv_table .cnv_time {
-        /* Reverse font size 0.625em; 3*1.6 */
-        width:          4.8em;
-    }
-    .cnv_table .cnv_user {
-        width:          5em;
-    }
-}
-
-
-/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-**                                                              Sidebar
-*/
-
-.cnv_sidebar h1 {
-    margin: 0.6em 0 0.2em;
-}
-
-
-.cnv_sidebar .cnv_submit {
-    width:  100%;
-    overflow: hidden;
-}
-.cnv_sidebar .cnv_submit input[type="submit"] {
-    float:  right;
-}
-
-
-
-/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-**                                                              User table
-*/
-
-.cnv_users {
-    width:  100%;
-    font-size:  0.8em;
-}
-.cnv_users td {
-    width:  75px;
-}
-.cnv_users tr.cnv_active td {
-    border-left:   8px solid #6a4;
-}
-.cnv_users tr.cnv_afk td {
-    border-left:   8px solid #fa0;
-}
-.cnv_users tr.cnv_inactive td {
-    border-left:   8px solid #a54;
-}
-
-
-/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-**                                                              Settings
-*/
-
-.cnv_settings {
-    list-style: none;
-    padding:    0;
-    margin:     0;
-}
-.cnv_settings p {
-    margin-bottom:  0.5em;
-}
-
-.cnv_settings label {
-    display:    inline-block;
-    width:      6em;
-}
-
-.cnv_settings .helptext {
-    display:    block;
-    font-size:  0.8em;
-    margin-left:    2.5em;
-}
-
-
-/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-**                                                              Input bar
-*/
-
-.cnv_input {
-    position:   absolute;
-    bottom: 0;
-    left:   0;
-    right:  0;
-    width:  100%;
-    background-color:   #ccc;
-    padding:    4px 0;
-}
-.cnv_input .cnv_table td {
-    border-bottom: 0;
-}
-.cnv_input input {
-    border: 0;
-}
-.cnv_input input[name=content] {
-    width:  100%;
-}
-
-
-/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-**                                                              Hourglass
-*/
-
-.cnv_hourglass_con {
-    position:   relative;
-    border: 1px solid #888;
-    /* Reverse font size 0.625 */
-    height: 1.6em;
-    margin: 2px;
-}
-.cnv_hourglass {
-    background: #aaa;
+/* Library mixins */
+/* Layout */
+.cnv_container {
+  /* children are in flex column */
+  display: flex;
+  flex-flow: row nowrap; }
+  .cnv_container .cnv_sidebar {
+    flex: 0 0 300px;
+    order: 2;
     height: 100%;
-}
-.cnv_hourglass_note {
-    position:   absolute;
+    overflow-y: auto; }
+  .cnv_container .cnv_content {
+    /* grow and shrink regardless of content */
+    flex: 1 1 auto;
+    order: 1;
+    /* fixed height */
+    height: 100%;
+    /* children are in flex row */
+    display: flex;
+    flex-flow: column nowrap; }
+    .cnv_container .cnv_content .cnv_messages {
+      flex: 1 1 auto;
+      height: 0;
+      overflow-y: auto; }
+      .cnv_container .cnv_content .cnv_messages .cnv_messages_inner {
+        /* stick table to bottom */
+        display: table;
+        height: 100%;
+        width: 100%; }
+        .cnv_container .cnv_content .cnv_messages .cnv_messages_inner .cnv_table_con {
+          display: table-cell;
+          vertical-align: bottom; }
+    .cnv_container .cnv_content .cnv_messages table, .cnv_container .cnv_content .cnv_input table {
+      width: 100%; }
+    .cnv_container .cnv_content .cnv_input {
+      flex: 0 0 auto; }
+      .cnv_container .cnv_content .cnv_input table form {
+        display: flex; }
+        .cnv_container .cnv_content .cnv_input table form textarea[name=content] {
+          width: 100%; }
+
+/*
+** Styles
+*/
+.cnv_content table {
+  border-collapse: collapse; }
+  .cnv_content table td {
+    vertical-align: top;
+    border-bottom: 1px solid #eee;
+    line-height: 1.2rem;
+    padding: 0.1rem 0.4rem;
+    overflow: hidden;
+    box-sizing: border-box; }
+    .cnv_content table td:nth-child(1) {
+      font-size: 0.625rem;
+      width: 4rem;
+      color: #888;
+      border-right: 1px solid #ccc; }
+    .cnv_content table td:nth-child(2) {
+      width: 7rem;
+      border-right: 1px solid #eee; }
+    .cnv_content table td:nth-child(-n+2) {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis; }
+    .cnv_content table td:nth-child(3) {
+      word-wrap: break-word; }
+    .cnv_content table td .cnv_img {
+      display: block; }
+    .cnv_content table td .cnv_img img {
+      max-width: 100%;
+      max-height: 70vh; }
+  .cnv_content table tr.cnv_ERROR td {
+    color: #fff;
+    background: #c00; }
+
+.cnv_content .cnv_input td {
+  background-color: #eee;
+  border-bottom: 0; }
+
+.cnv_content .cnv_input textarea {
+  border: 0;
+  padding: 0.4rem; }
+
+.cnv_content .cnv_input td:first-child {
+  padding: 0;
+  position: relative;
+  border-right: 1px solid #888; }
+  .cnv_content .cnv_input td:first-child .cnv_hourglass_con {
+    position: absolute;
     top: 0;
-    bottom:0;
-    left:0;
-    right:0;
+    bottom: 0;
+    left: 0;
+    right: 0; }
+  .cnv_content .cnv_input td:first-child .cnv_hourglass {
+    background: #ccc;
+    height: 100%; }
+  .cnv_content .cnv_input td:first-child .cnv_hourglass_note {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
     padding: 2px;
     text-align: center;
     -webkit-touch-callout: none;
@@ -192,133 +113,129 @@
     -khtml-user-select: none;
     -moz-user-select: none;
     -ms-user-select: none;
-    user-select: none;
-}
+    user-select: none; }
 
+.cnv_container {
+  position: relative; }
+  .cnv_container > input[type="checkbox"] + label {
+    display: block;
+    overflow: hidden;
+    position: absolute;
+    visibility: hidden;
+    z-index: 3; }
+    .cnv_container > input[type="checkbox"] + label::after {
+      content: "×";
+      visibility: visible;
+      display: block;
+      position: absolute;
+      text-align: center; }
+  .cnv_container > input[type="checkbox"]:checked + label::after {
+    content: "◂"; }
+  .cnv_container > input[type="checkbox"] {
+    display: none; }
+    .cnv_container > input[type="checkbox"] + label {
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 2rem;
+      height: 2rem;
+      font-size: 1.5rem;
+      line-height: 2rem; }
+      .cnv_container > input[type="checkbox"] + label::after {
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%; }
+    .cnv_container > input[type="checkbox"] ~ .cnv_sidebar {
+      display: block; }
+    .cnv_container > input[type="checkbox"]:checked ~ .cnv_sidebar {
+      display: none; }
 
-/******************************************************************************
-**                                                   JavaScript-managed layout
-*/
-
-.cnv_js .cnv_msgs {
-    position:   absolute;
-    top:    0;
-    right:  200px;
-    left:   0;
-}
-
-.cnv_js .cnv_sidebar {
-    position:   absolute;
-    top:    0;
-    right:  0;
-    width:  200px;
-    -webkit-box-sizing: border-box;
-    -moz-box-sizing: border-box;
-    box-sizing: border-box;  
-    padding:    0 1em;
-}
-
-.cnv_js .cnv_sidebar_toggle {
-    display:    none;
-}
-
-
-@media all and (max-width: 800px) {
-    /* In minimal mode:
-        * msgs are full screen
-        * sidebar is hidden by default, full screen when visible
-        * sidebar_toggle is shown at all times, different icon
-    */
-    .cnv_js .cnv_msgs {
-        right:      0;
-        z-index:    1;
-    }
-    .cnv_js .cnv_sidebar {
-        display:    none;
-        z-index:    2;
-        width:      auto;
-        left:       0;
-        
-        padding-bottom:     1em;
-        border-bottom:      1px solid #000;
-        -webkit-box-shadow: 0 8px 5px -5px rgba(0,0,0,0.8);
-        box-shadow:         0 8px 5px -5px rgba(0,0,0,0.8);
-        
-        background-color:   #fff;
-    }
-    .cnv_js .cnv_sidebar.cnv_visible {
-        display:    block;
-    }
-    
-    .cnv_js .cnv_sidebar_toggle {
-        display:    block;
-        position:   absolute;
-        z-index:    3;
-        top:        0;
-        right:      0;
-        width:      24px;
-        height:     24px;
-        border-style:   solid;
-        border-color:   #4d4d4f;
-        border-width:   0 0 1px 1px;
-        text-decoration:    none;
-        background: url('/static/conversate/images/icons.png') 0 0 no-repeat #fff;
-    }
-    .cnv_js .cnv_sidebar_toggle.cnv_visible {
-        background-position:    0 -24px;
-    }
-}
-
-
-/* old
-
-tr.msg_Leela td {
-    color:  #800;
-}
-tr.msg_Richard td {
-    color:  #008;
-}
-
-div#scrollbar {
-    position:   absolute;
-    top:        0;
-    right:      0;
-    width:      4px;
-    background: #444;
-}
+.cnv_sidebar {
+  padding: 1rem; }
+  .cnv_sidebar h1 {
+    font-size: 1.2rem;
+    margin: 1.2rem 0 0.8rem; }
+    .cnv_sidebar h1:first-child {
+      margin-top: 0; }
+  .cnv_sidebar .cnv_users {
+    width: 100%; }
+    .cnv_sidebar .cnv_users th {
+      text-align: left; }
+    .cnv_sidebar .cnv_users td {
+      font-size: 0.8em;
+      width: 5rem;
+      padding-left: 0.4rem; }
+    .cnv_sidebar .cnv_users th, .cnv_sidebar .cnv_users td {
+      border-bottom: 1px solid #ccc; }
+    .cnv_sidebar .cnv_users tr:last-child th, .cnv_sidebar .cnv_users tr:last-child td {
+      border-bottom: 0; }
+    .cnv_sidebar .cnv_users tr.cnv_active td {
+      border-left: 8px solid #6a4; }
+    .cnv_sidebar .cnv_users tr.cnv_afk td {
+      border-left: 8px solid #fa0; }
+    .cnv_sidebar .cnv_users tr.cnv_inactive td {
+      border-left: 8px solid #a54; }
+  .cnv_sidebar .cnv_submit {
+    width: 100%;
+    overflow: hidden; }
+    .cnv_sidebar .cnv_submit input[type="submit"] {
+      float: right; }
+  .cnv_sidebar .cnv_settings {
+    list-style: none;
+    padding: 0;
+    margin: 0; }
+    .cnv_sidebar .cnv_settings p {
+      margin-bottom: 0.5em; }
+    .cnv_sidebar .cnv_settings label {
+      display: inline-block;
+      width: 6em; }
+    .cnv_sidebar .cnv_settings .helptext {
+      display: block;
+      font-size: 0.8em;
+      margin-left: 2.5em; }
 
 @media all and (max-width: 640px) {
-    div.sidebar_con {
-        display:    none;
-    }
-    div.content {
-        margin-right:   0;
-    }
-}
-
-@media all and (max-width: 300px) {
-    .cnv_msgs > table td.user {
-        display:    none;
-    }
-    .cnv_msgs > table {
-        table-layout:   fixed;
-    }
-    .cnv_msgs > table tr#older {
-        display:    none;
-    }
-    .cnv_msgs > table td.time {
-        width:      20px;
-        overflow:   hidden;
-        white-space: nowrap
-    }
-    
-    div.input .cnv_msgs > table td:nth-child(1) {
-        width:      20px;
-    }
-    div.input .cnv_msgs > table td:nth-child(2) {
-        display:    none;
-    }
-}
-
-
-*/
+  .cnv_container > input[type="checkbox"] + label::after {
+    content: "◂"; }
+  .cnv_container > input[type="checkbox"] ~ .cnv_sidebar {
+    display: none; }
+  .cnv_container > input[type="checkbox"] ~ .cnv_content {
+    display: flex; }
+  .cnv_container > input[type="checkbox"]:checked + label::after {
+    content: "×"; }
+  .cnv_container > input[type="checkbox"]:checked ~ .cnv_sidebar {
+    display: block; }
+  .cnv_container > input[type="checkbox"]:checked ~ .cnv_content {
+    display: none; }
+  .cnv_sidebar {
+    display: none; }
+  .cnv_content table {
+    display: block; }
+    .cnv_content table tr {
+      display: flex;
+      flex-flow: row wrap; }
+      .cnv_content table tr td:nth-child(-n+2) {
+        width: auto; }
+      .cnv_content table tr td:nth-child(-n+2) {
+        display: block;
+        border: 0; }
+      .cnv_content table tr td:nth-child(1) {
+        flex: 1 1 auto; }
+      .cnv_content table tr td:nth-child(2) {
+        flex: 1 1 auto; }
+      .cnv_content table tr td:nth-child(3) {
+        display: block;
+        width: 100%; }
+  .cnv_content .cnv_messages table tr td:nth-child(1) {
+    order: 2;
+    flex: 1 1 auto; }
+  .cnv_content .cnv_messages table tr td:nth-child(2) {
+    order: 1;
+    flex: 0 0 auto;
+    font-weight: bold; }
+  .cnv_content .cnv_messages table tr td:nth-child(3) {
+    order: 3;
+    display: block;
+    width: 100%;
+    padding-left: 2rem; } }
