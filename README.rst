@@ -1,5 +1,5 @@
 =======================================
-Conversate - Persistant chat for Django
+Conversate - Persistent chat for Django
 =======================================
 
 A simple lightweight persistent chat app for Django sites, where users may not
