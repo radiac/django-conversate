@@ -12,12 +12,13 @@ Upgrading from 0.1.0
 * Add a namespace to your url import.
 * Only tested on Django 1.11 under Python 3.5. Patches to improve compatibility
   are welcome.
+* Styles have changed, you may need to update your templates
 
 
 Changelog
 =========
 
-0.2.0       2018-11-
+0.2.0       2018-11-18
             Feature:    Supports multi-line entry (shift+enter) and markdown
             Change:     Minimum Django requirement now 1.11
             Change:     Requires Python 3.5
