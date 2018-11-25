@@ -41,7 +41,7 @@
   "license": "BSD",
   "devDependencies": {
     "npm-run-all": "^4.1.2",
-    "uglify-js": "^3.3.22",
+    "uglify-es": "^3.3.9",
     "uglifycss": "0.0.29",
     "uglifyify": "^5.0.0",
     "watchify": "^3.9.0"
