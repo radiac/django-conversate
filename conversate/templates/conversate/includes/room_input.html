@@ -3,9 +3,22 @@
         <td>&nbsp;</td>
         <td>&nbsp;</td>
         <td>
-            <form method="POST" action="{% url "conversate:send" room_slug=room.slug %}" autocomplete="off">
+            <form
+                method="POST"
+                action="{% url "conversate:send" room_slug=room.slug %}"
+                autocomplete="off"
+                enctype="multipart/form-data"
+            >
                 {% csrf_token %}
                 {{ form.content }}
+
+                <div class="cnv_input__file">
+                    <input type="checkbox" id="cnv_input__toggler-file">
+                    <label for="cnv_input__toggler-file">Upload file</label>
+                    <div>
+                        {{ form.file }}
+                    </div>
+                </div>
                 <input type="submit" value="Send">
             </form>
         </td>

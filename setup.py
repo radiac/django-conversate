@@ -1,7 +1,9 @@
 import os
-from setuptools import setup, find_packages
+
+from setuptools import find_packages, setup
 
 from conversate import __version__
+
 
 def read(fname):
     return open(os.path.join(os.path.dirname(__file__), fname)).read()
@@ -28,4 +30,10 @@ setup(
     zip_safe=True,
     packages=find_packages(exclude=('example*',)),
     include_package_data=True,
+    install_requires=[
+        'Django>=2.2.0',
+        'django-yaa-settings',
+        'commonmark',
+        'emoji',
+    ],
 )

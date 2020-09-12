@@ -8,7 +8,7 @@ class MessageForm(forms.ModelForm):
 
     class Meta:
         model = models.Message
-        fields = ['content']
+        fields = ['content', 'file']
         widgets = {
             'content': forms.Textarea(
                 attrs={

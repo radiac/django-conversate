@@ -20,7 +20,7 @@ def room_required(fn):
         room = get_object_or_404(models.Room, slug=kwargs.get('room_slug', None))
 
         # Check logged in
-        if not request.user.is_authenticated():
+        if not request.user.is_authenticated:
             # Make auth decorator fail to force user to login form
             return user_passes_test(lambda u: False)(lambda r:None)(request)
 
