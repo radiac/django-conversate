@@ -12,7 +12,9 @@ from . import settings
 
 
 def get_template_settings(
-    room=None, room_user=None, extra=None,
+    room=None,
+    room_user=None,
+    extra=None,
 ):
     config = {
         "alertEnabled": room_user.alert if room_user else False,

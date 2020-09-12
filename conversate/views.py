@@ -6,7 +6,8 @@ import time
 
 from django.contrib.auth.decorators import login_required
 from django.core.mail import send_mail
-from django.http import FileResponse, Http404, HttpResponseRedirect, JsonResponse
+from django.http import (FileResponse, Http404, HttpResponseRedirect,
+                         JsonResponse)
 from django.shortcuts import get_object_or_404, render
 from django.urls import reverse
 from django.utils import timezone

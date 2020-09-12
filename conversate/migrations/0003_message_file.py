@@ -7,13 +7,20 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('conversate', '0002_auto_20181120_0655'),
+        ("conversate", "0002_auto_20181120_0655"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='message',
-            name='file',
-            field=models.FileField(blank=True, null=True, storage=django.core.files.storage.FileSystemStorage(location='/home/radiac/work/sites/uzeweb.com/my/site/../media'), upload_to='conversate'),
+            model_name="message",
+            name="file",
+            field=models.FileField(
+                blank=True,
+                null=True,
+                storage=django.core.files.storage.FileSystemStorage(
+                    location="/home/radiac/work/sites/uzeweb.com/my/site/../media"
+                ),
+                upload_to="conversate",
+            ),
         ),
     ]

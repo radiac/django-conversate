@@ -26,7 +26,7 @@ def naturaltimestamp(value):
 
     # Catch future values - server time has gone into the past
     if value > now:
-        return 'now'
+        return "now"
 
     delta = int(now - value)
 
@@ -36,23 +36,25 @@ def naturaltimestamp(value):
 @register.filter
 def naturaltimedelta(delta):
     if delta < 0:
-        return 'never'
+        return "never"
 
     elif delta < 60:
-        term = 'second'
+        term = "second"
 
     elif delta < 60 * 60:
         delta /= 60
-        term = 'minute'
+        term = "minute"
 
     elif delta < 60 * 60 * 24:
         delta /= 60 * 60
-        term = 'hour'
+        term = "hour"
 
     else:
         delta /= 60 * 60 * 24
-        term = 'day'
+        term = "day"
 
     return "%s %s%s" % (
-        int(delta), term, '' if delta == 1 else 's',
+        int(delta),
+        term,
+        "" if delta == 1 else "s",
     )

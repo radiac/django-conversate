@@ -27,7 +27,9 @@ class Migration(migrations.Migration):
                 ("timestamp", models.IntegerField()),
                 ("content", models.TextField()),
             ],
-            options={"ordering": ("timestamp",),},
+            options={
+                "ordering": ("timestamp",),
+            },
         ),
         migrations.CreateModel(
             name="Room",
@@ -47,7 +49,9 @@ class Migration(migrations.Migration):
                 ),
                 ("slug", models.SlugField(help_text=b"Slug for the room", unique=True)),
             ],
-            options={"ordering": ("title",),},
+            options={
+                "ordering": ("title",),
+            },
         ),
         migrations.CreateModel(
             name="RoomUser",
@@ -116,17 +120,21 @@ class Migration(migrations.Migration):
                 (
                     "room",
                     models.ForeignKey(
-                        to="conversate.Room", on_delete=models.deletion.CASCADE,
+                        to="conversate.Room",
+                        on_delete=models.deletion.CASCADE,
                     ),
                 ),
                 (
                     "user",
                     models.ForeignKey(
-                        to=settings.AUTH_USER_MODEL, on_delete=models.deletion.CASCADE,
+                        to=settings.AUTH_USER_MODEL,
+                        on_delete=models.deletion.CASCADE,
                     ),
                 ),
             ],
-            options={"ordering": ("room", "user__username"),},
+            options={
+                "ordering": ("room", "user__username"),
+            },
         ),
         migrations.AddField(
             model_name="room",

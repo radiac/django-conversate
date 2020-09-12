@@ -8,58 +8,72 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('conversate', '0001_initial'),
+        ("conversate", "0001_initial"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='room',
-            name='slug',
-            field=models.SlugField(help_text='Slug for the room', unique=True),
+            model_name="room",
+            name="slug",
+            field=models.SlugField(help_text="Slug for the room", unique=True),
         ),
         migrations.AlterField(
-            model_name='room',
-            name='title',
-            field=models.CharField(help_text='Title of the room', max_length=255),
+            model_name="room",
+            name="title",
+            field=models.CharField(help_text="Title of the room", max_length=255),
         ),
         migrations.AlterField(
-            model_name='roomuser',
-            name='alert',
-            field=models.BooleanField(default=True, help_text='Visual alert when activity while not focused'),
+            model_name="roomuser",
+            name="alert",
+            field=models.BooleanField(
+                default=True, help_text="Visual alert when activity while not focused"
+            ),
         ),
         migrations.AlterField(
-            model_name='roomuser',
-            name='colour',
-            field=models.CharField(default='000000', help_text='Hex colour code', max_length=6),
+            model_name="roomuser",
+            name="colour",
+            field=models.CharField(
+                default="000000", help_text="Hex colour code", max_length=6
+            ),
         ),
         migrations.AlterField(
-            model_name='roomuser',
-            name='has_focus',
-            field=models.BooleanField(default=False, help_text="If the user's window has focus"),
+            model_name="roomuser",
+            name="has_focus",
+            field=models.BooleanField(
+                default=False, help_text="If the user's window has focus"
+            ),
         ),
         migrations.AlterField(
-            model_name='roomuser',
-            name='inactive_from',
-            field=models.DateTimeField(blank=True, help_text='User has left if no poll before this time', null=True),
+            model_name="roomuser",
+            name="inactive_from",
+            field=models.DateTimeField(
+                blank=True,
+                help_text="User has left if no poll before this time",
+                null=True,
+            ),
         ),
         migrations.AlterField(
-            model_name='roomuser',
-            name='last_mail_alert',
-            field=models.DateTimeField(blank=True, help_text='Last time a mail alert was sent', null=True),
+            model_name="roomuser",
+            name="last_mail_alert",
+            field=models.DateTimeField(
+                blank=True, help_text="Last time a mail alert was sent", null=True
+            ),
         ),
         migrations.AlterField(
-            model_name='roomuser',
-            name='last_seen',
-            field=models.DateTimeField(blank=True, help_text='Last seen', null=True),
+            model_name="roomuser",
+            name="last_seen",
+            field=models.DateTimeField(blank=True, help_text="Last seen", null=True),
         ),
         migrations.AlterField(
-            model_name='roomuser',
-            name='last_spoke',
-            field=models.DateTimeField(blank=True, help_text='Last spoke', null=True),
+            model_name="roomuser",
+            name="last_spoke",
+            field=models.DateTimeField(blank=True, help_text="Last spoke", null=True),
         ),
         migrations.AlterField(
-            model_name='roomuser',
-            name='mail_alert',
-            field=models.BooleanField(default=False, help_text='Send e-mail alert when activity while offline'),
+            model_name="roomuser",
+            name="mail_alert",
+            field=models.BooleanField(
+                default=False, help_text="Send e-mail alert when activity while offline"
+            ),
         ),
     ]
