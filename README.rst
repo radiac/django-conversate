@@ -38,14 +38,9 @@ There is an example site in the ``example`` directory.
 Installation
 ============
 
-1. Install ``django-conversate`` (currently only on github)::
+1. Install ``django-conversate``::
 
-    pip install -e git+https://github.com/radiac/django-conversate.git#egg=django-conversate
-
-   Note: The master branch may sometimes contain minor changes made since the
-   version was incremented. These changes will be listed in
-   `CHANGES <CHANGES>`_. It will always be safe to use, but versions will be
-   tagged if you only want to follow releases.
+    pip install django-conversate
 
 2. Add Conversate to ``INSTALLED_APPS``::
 
@@ -61,7 +56,7 @@ Installation
     url(r'^conversate/', include('conversate.urls', namespace='conversate')),
 
 4. Make sure your ``base.html`` template has the necessary blocks, or override
-   Conversate's base, ``conversate/base.html`` (see `Templates`_ below). You
+   Conversate's base, ``conversate/base.html`` (see `Templates and styles`_ below). You
    will also want to create a link somewhere to ``conversate-index`` (or
    ``conversate.views.index``) so users can access it.
 
@@ -112,7 +107,7 @@ Add these settings to your ``settings.py`` file to override the defaults.
 ``CONVERSATE_DISCONNECT_AT``:
     How long before marking the user as disconnected (in secs)
 
-    Defaults to POLL_MAX plus 30 seconds, `os.path.join(BASE_DIR, "..", "private")`60 + 30````
+    Defaults to POLL_MAX plus 30 seconds, ``60 + 30``
 
 ``CONVERSATE_EMAIL_FROM``:
     From address for alert e-mails
