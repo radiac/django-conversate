@@ -18,6 +18,13 @@ Upgrading from 0.1.0
 Changelog
 =========
 
+0.3.0       2020-09-13
+            Feature:    Supports file uploads
+            Change:     Supports Django 2.2+
+            Change:     Requires Python 3.6
+            Bugfix:     Server-side API errors return gracefully
+            Security:   Upstream JS fixes
+
 0.2.0       2018-11-18
             Feature:    Supports multi-line entry (shift+enter) and markdown
             Change:     Minimum Django requirement now 1.11
@@ -34,15 +41,21 @@ Changelog
 Roadmap
 =======
 
-Target
-0.3.x       Improve room.updateTimes to eventually update older entries
-            Admin option to clear room without deleting it
-            Admin option to make a room public, so users can add themselves
-            User options
-            * Separate flash and title visual alerts into two options
-            * Provide custom e-mail address for alerts
-            * Set alert time ranges
-            * Colour picker
-0.4.0       Support for long-polling and websockets
+* Support for websockets
+* Documented API for integration with third party apps
+* Improve room.updateTimes to update older entries
+* UI improvements
+  * Room selection sidebar
+  * API to automatically save settings changes
+* Admin options
+  * Let users edit and delete their messages
+  * Clear room without deleting it
+  * UI for creating and managing rooms
+  * Admin option to make a room public, so users can add themselves
+* User options
+    * Separate flash and title visual alerts into two options
+    * Provide custom e-mail address for alerts
+    * Set alert time ranges
+    * Colour picker
 
 The roadmap is subject to change; let me know if something is important to you.
