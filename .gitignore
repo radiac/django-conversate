@@ -1,5 +1,19 @@
-__pycache__/
+# Dev
 *.pyc
-django_conversate.egg-info
+__pycache__
+node_modules
+
+# Test
+.coverage*
+htmlcov
+test_media
+
+# Example
+docker-compose.dev.yml
 example/db.sqlite3
-node_modules/
+
+# Build
+*.egg-info
+build
+dist
+docs/_build
