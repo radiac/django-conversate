@@ -9,14 +9,12 @@ script:
 
 jobs:
   include:
-
   - python: '3.7'
     env: TOXENV=py37-django2.2
   - python: '3.7'
     env: TOXENV=py37-django3.0
   - python: '3.7'
     env: TOXENV=py37-django3.1
-
   - python: '3.8'
     env: TOXENV=py38-django2.2
   - python: '3.8'
@@ -24,3 +22,13 @@ jobs:
   - python: '3.8'
     env: TOXENV=py38-django3.1
 
+deploy:
+  provider: pypi
+  user: radiac
+  password:
+    secure: l85O2WTzuC2tSqYdQpO4dOo0UOxbgl3CgRLsXc8FT004haBol0efYnCjcIMMVkLDIoZeWXomEuFuQgCEfGkeTLnzU74I6NQzrXymRqH0JtZ5oEz2z/3Vb66/Q8gbwUUP3Cj8O7oKKS4yisdzEHeeY+WW/Vhlh5CtrHNr2zNyUsLzVH8etmA/bI40Ouoa3stSDJQA7bvX7uCpssyTey87DKuH95d5jrVWAYndZdilpWmRwlV8AWNLHk9noIU0mTKxRkzFlDoIHzCRP6gKxvCEmXkvCw4YYnT1SxaUImSHdPpj/WzalmdS6IORXDlTJKUlO+8cLh4/YRGgRvhcuhWk5OHnR4xbLE2Z4/lCNuvXVQUTCpTSZmS531G0U3xxpZSUrcF+XNbmYIvXRt1cd8Mh9DxjNbCCugYPhEG3EBbaBZu48RdIbFjAFW2zAcOg8Ygbasy9TKIECFn+bZ0GFKNtTRT7DlTb19f6PKmfTb3+joNsQxaeLg7xqKRAw+paoswk3DxlthgEBs+HSUo80OE/I5S8Hkdj0s8qUvPOE7RjL60ZW5r10WpsEqoLzg3W2aQQ2JyBc3RMmgB80uFaFmRFyRHxxC29c4iDJocyWERockL/VJwmKff2w4oPsJkvOCQAoC1um3L2UKgNTOHBWbW+uayLQOXEetMl5w2UI/6qO+k=
+  skip_existing: true
+  on:
+    tags: true
+    distributions: sdist bdist_wheel
+    repo: radiac/django-conversate
