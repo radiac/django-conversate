@@ -2,13 +2,17 @@
 Conversate - Persistent chat for Django
 =======================================
 
-A simple lightweight persistent chat app for Django sites, where users may not
-always be around at the same time.
+A simple lightweight persistent chat app for Django sites, designed for users who may
+not always be around at the same time.
 
-Requiring nothing other than a working Django installation, messages can be
-left for users to pick up later, users can opt in to receive e-mail alerts of
-activity when they are away, and real-time conversations are supported through
-simple polling so it will work through the most restrictive of firewalls.
+* Project site: http://radiac.net/projects/django-conversate/
+* Source code: https://github.com/radiac/django-conversate
+
+.. image:: https://travis-ci.org/radiac/django-conversate.svg?branch=master
+    :target: https://travis-ci.org/radiac/django-conversate
+
+.. image:: https://coveralls.io/repos/radiac/django-conversate/badge.svg?branch=master&service=github
+    :target: https://coveralls.io/github/radiac/django-conversate?branch=master
 
 
 Features
