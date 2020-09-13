@@ -1,0 +1,5 @@
+include LICENSE
+recursive-include conversate/static *
+recursive-include conversate/templates *
+recursive-include tests *
+recursive-exclude tests *.pyc
