@@ -507,7 +507,7 @@ $('document').ready(function () {
       this._request(settings.apiSend, formData);
     },
     error: function (msg) {
-      this._add(time(), 'ERROR', msg);
+      this._add(time(), 'ERROR', msg + '<br><a href=".">Reload</a>');
     },
     _request: function (url, data) {
       // Queue requests

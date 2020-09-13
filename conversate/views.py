@@ -6,14 +6,13 @@ import time
 
 from django.contrib.auth.decorators import login_required
 from django.core.mail import send_mail
-from django.http import (FileResponse, Http404, HttpResponseRedirect,
-                         JsonResponse)
+from django.http import FileResponse, Http404, HttpResponseRedirect, JsonResponse
 from django.shortcuts import get_object_or_404, render
 from django.urls import reverse
 from django.utils import timezone
 
 from conversate import forms, models, settings, utils
-from conversate.decorators import room_required
+from conversate.decorators import room_required, room_required_api
 
 
 @login_required
@@ -132,7 +131,7 @@ def update_settings(request, room, room_slug):
     )
 
 
-@room_required
+@room_required_api
 def api_base(request, room, room_slug):
     """
     Base API URL
@@ -141,7 +140,7 @@ def api_base(request, room, room_slug):
     raise Http404
 
 
-@room_required
+@room_required_api
 def api_check(request, room, room_slug):
     """
     API: check for new messages
@@ -268,7 +267,7 @@ def _api_check(request, room, room_slug, last_pk, spoke=False):
     )
 
 
-@room_required
+@room_required_api
 def api_send(request, room, room_slug):
     """
     API: send message
@@ -300,7 +299,7 @@ def api_send(request, room, room_slug):
     return JsonResponse({"success": False, "error": error})
 
 
-@room_required
+@room_required_api
 def api_history(request, room, room_slug):
     first_pk = request.POST.get("first", None)
     messages = room.messages.filter(pk__lt=first_pk)
