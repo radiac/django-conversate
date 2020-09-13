@@ -18,6 +18,9 @@ Upgrading from 0.1.0
 Changelog
 =========
 
+0.3.1       2020-09-13
+            Change:     Documentation
+
 0.3.0       2020-09-13
             Feature:    Supports file uploads
             Change:     Supports Django 2.2+
