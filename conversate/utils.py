@@ -5,7 +5,6 @@ import json
 import time
 
 from django.core.serializers.json import DjangoJSONEncoder
-from django.http import HttpResponse
 from django.urls import reverse
 
 from . import settings

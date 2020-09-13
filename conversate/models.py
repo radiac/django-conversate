@@ -4,15 +4,17 @@ Conversate models
 import os
 import time
 
-from commonmark import commonmark
 from django.contrib.auth import get_user_model
 from django.core.files.storage import FileSystemStorage
 from django.db import models
 from django.urls import reverse
 from django.utils import html, timezone
+
+from commonmark import commonmark
 from emoji import emojize
 
 from . import settings
+
 
 User = get_user_model()
 

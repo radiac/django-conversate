@@ -1,5 +1,6 @@
 from django.conf import settings
 
+
 # Number of lines to show on a page
 PAGE_SIZE = getattr(settings, "CONVERSATE_PAGE_SIZE", 100)
 
