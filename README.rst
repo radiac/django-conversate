@@ -17,11 +17,12 @@ Features
 * Admins create rooms and add users to them
 * Messages are stored in the database
 * Full history is available to all users of that room
+* File upload support
 * Simple jquery-based polling for real-time updates
 * Users can opt in to receive e-mail alerts of activity when away
 * Support for users without javascript
 
-Version 0.2.0
+Supports Django 2.2+, on Python 3.6+.
 
 * See `CHANGES <CHANGES>`_ for full changelog and roadmap
 * See `UPGRADE <UPGRADE.rst>`_ for how to upgrade from earlier releases
@@ -32,14 +33,6 @@ connection, installations where a large number of concurrent users are expected
 should look for a different solution involving long-polling and websockets.
 
 There is an example site in the ``example`` directory.
-
-
-Requirements
-============
-
-This has been tested on Django 1.11 using Python 3.5.
-
-For earlier versions, see the 0.1.0 release.
 
 
 Installation
@@ -119,12 +112,23 @@ Add these settings to your ``settings.py`` file to override the defaults.
 ``CONVERSATE_DISCONNECT_AT``:
     How long before marking the user as disconnected (in secs)
 
-    Defaults to POLL_MAX plus 30 seconds, ``60 + 30``
+    Defaults to POLL_MAX plus 30 seconds, `os.path.join(BASE_DIR, "..", "private")`60 + 30````
 
 ``CONVERSATE_EMAIL_FROM``:
     From address for alert e-mails
 
     Default: ``DEFAULT_FROM_EMAIL`` (from main Django settings)
+
+``CONVERSATE_STORE_ROOT``:
+    Path to dir where uploaded files are stored.
+
+    This should not be publicly accessible otherwise files could be downloaded without
+    permission. The default value is the media root so that it works out of the box, but
+    this is insecure as permission checks can be bypassed.
+
+    Example: ``os.path.join(BASE_DIR, "..", "private")``
+
+    Default: ``MEDIA_ROOT``
 
 
 Templates and styles
@@ -173,9 +177,4 @@ Credits
 
 Thanks to all contributors, who are listed in CHANGES.
 
-This project's static files include bundled versions of:
-
-* jquery: https://jquery.com/
-* resize-observer-polyfill: https://github.com/que-etc/resize-observer-polyfill
-* markdown-it: https://github.com/markdown-it/markdown-it
-* markdown-it-slack: https://github.com/invisible-tech/markdown-it-slack
+This project includes bundled JavaScript dependencies.

@@ -1,59 +1,59 @@
 """
 Conversate URLs
 """
-from django.conf.urls import url
+from django.urls import re_path
 
 from . import views
 
+app_name = "conversate"
 
 urlpatterns = [
-    url(
-        r'^$',
+    re_path(
+        r"^$",
         views.index,
-        name='index',
+        name="index",
     ),
-
-    url(
-        r'^(?P<room_slug>[-\w]+)/$',
+    re_path(
+        r"^(?P<room_slug>[-\w]+)/$",
         views.room,
-        name='room',
+        name="room",
     ),
-
-    url(
-        r'^(?P<room_slug>[-\w]+)/send/$',
+    re_path(
+        r"^(?P<room_slug>[-\w]+)/send/$",
         views.send,
-        name='send',
+        name="send",
     ),
-
-    url(
-        r'^(?P<room_slug>[-\w]+)/settings/$',
+    re_path(
+        r"^(?P<room_slug>[-\w]+)/file/(?P<message_id>\d+)/$",
+        views.download_file,
+        name="file",
+    ),
+    re_path(
+        r"^(?P<room_slug>[-\w]+)/settings/$",
         views.update_settings,
-        name='settings',
+        name="settings",
     ),
-
-
     #
     # JSON API
     #
-
-    url(
-        r'^(?P<room_slug>[-\w]+)/api/$',
+    re_path(
+        r"^(?P<room_slug>[-\w]+)/api/$",
         views.api_base,
-        name='api_base',
+        name="api_base",
     ),
-    url(
-        r'^(?P<room_slug>[-\w]+)/api/poll/$',
+    re_path(
+        r"^(?P<room_slug>[-\w]+)/api/poll/$",
         views.api_check,
-        name='api_check',
+        name="api_check",
     ),
-    url(
-        r'^(?P<room_slug>[-\w]+)/api/send/$',
+    re_path(
+        r"^(?P<room_slug>[-\w]+)/api/send/$",
         views.api_send,
-        name='api_send',
+        name="api_send",
     ),
-    url(
-        r'^(?P<room_slug>[-\w]+)/api/history/$',
+    re_path(
+        r"^(?P<room_slug>[-\w]+)/api/history/$",
         views.api_history,
-        name='api_history',
+        name="api_history",
     ),
 ]

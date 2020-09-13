@@ -8,7 +8,13 @@ class RoomUserAdmin(admin.TabularInline):
 
 
 class RoomAdmin(admin.ModelAdmin):
-    list_display = ['title', 'slug',]
-    inlines = [RoomUserAdmin,]
-admin.site.register(models.Room, RoomAdmin)
+    list_display = [
+        "title",
+        "slug",
+    ]
+    inlines = [
+        RoomUserAdmin,
+    ]
 
+
+admin.site.register(models.Room, RoomAdmin)

@@ -39,10 +39,56 @@
       width: 100%; }
     .cnv_container .cnv_content .cnv_input {
       flex: 0 0 auto; }
+      .cnv_container .cnv_content .cnv_input table td {
+        position: relative; }
       .cnv_container .cnv_content .cnv_input table form {
         display: flex; }
         .cnv_container .cnv_content .cnv_input table form textarea[name=content] {
           width: 100%; }
+        .cnv_container .cnv_content .cnv_input table form .cnv_input__file {
+          flex: 0 0 auto;
+          width: 2rem; }
+          .cnv_container .cnv_content .cnv_input table form .cnv_input__file > input[type="checkbox"] + label {
+            display: block;
+            overflow: hidden;
+            position: absolute;
+            visibility: hidden;
+            z-index: 3; }
+            .cnv_container .cnv_content .cnv_input table form .cnv_input__file > input[type="checkbox"] + label::after {
+              content: "📎";
+              visibility: visible;
+              display: block;
+              position: absolute;
+              text-align: center; }
+          .cnv_container .cnv_content .cnv_input table form .cnv_input__file > input[type="checkbox"]:checked + label::after {
+            content: "▾"; }
+          .cnv_container .cnv_content .cnv_input table form .cnv_input__file > input[type="checkbox"] {
+            display: none; }
+            .cnv_container .cnv_content .cnv_input table form .cnv_input__file > input[type="checkbox"] + label {
+              width: 2rem;
+              height: 2rem;
+              font-size: 1.5rem;
+              line-height: 2rem; }
+              .cnv_container .cnv_content .cnv_input table form .cnv_input__file > input[type="checkbox"] + label::after {
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%; }
+            .cnv_container .cnv_content .cnv_input table form .cnv_input__file > input[type="checkbox"] ~ div {
+              display: none;
+              position: absolute;
+              right: 0;
+              top: -2.4rem;
+              height: 2.4rem;
+              line-height: 2rem;
+              padding: 0.2rem;
+              border: 1px solid #ccc;
+              border-bottom: 0;
+              border-radius: 5px 5px 0 0; }
+              .cnv_container .cnv_content .cnv_input table form .cnv_input__file > input[type="checkbox"] ~ div input {
+                display: block; }
+            .cnv_container .cnv_content .cnv_input table form .cnv_input__file > input[type="checkbox"]:checked ~ div {
+              display: block; }
 
 /*
 ** Styles
@@ -54,7 +100,6 @@
     border-bottom: 1px solid #eee;
     line-height: 1.2rem;
     padding: 0.1rem 0.4rem;
-    overflow: hidden;
     box-sizing: border-box; }
     .cnv_content table td:nth-child(1) {
       font-size: 0.625rem;
@@ -70,11 +115,22 @@
       text-overflow: ellipsis; }
     .cnv_content table td:nth-child(3) {
       word-wrap: break-word; }
-    .cnv_content table td .cnv_img {
-      display: block; }
-    .cnv_content table td .cnv_img img {
-      max-width: 100%;
-      max-height: 70vh; }
+    .cnv_content table td .cnv_file {
+      display: block;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      background-color: #eee;
+      padding: 5px;
+      margin: 1rem 3rem;
+      width: max-content;
+      max-width: 500px; }
+      .cnv_content table td .cnv_file img {
+        max-width: 100%;
+        max-height: 30vh;
+        display: block;
+        margin: 0;
+        padding: 0;
+        border: 0; }
   .cnv_content table tr.cnv_ERROR td {
     color: #fff;
     background: #c00; }
@@ -115,6 +171,9 @@
     -ms-user-select: none;
     user-select: none; }
 
+.cnv_content .cnv_input .cnv_input__file div {
+  background: #eee; }
+
 .cnv_container {
   position: relative; }
   .cnv_container > input[type="checkbox"] + label {
@@ -152,6 +211,7 @@
       display: none; }
 
 .cnv_sidebar {
+  background-color: #ddd;
   padding: 1rem; }
   .cnv_sidebar h1 {
     font-size: 1.2rem;

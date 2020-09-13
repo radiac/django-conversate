@@ -8,12 +8,12 @@ class MessageForm(forms.ModelForm):
 
     class Meta:
         model = models.Message
-        fields = ['content']
+        fields = ["content", "file"]
         widgets = {
-            'content': forms.Textarea(
+            "content": forms.Textarea(
                 attrs={
-                    'placeholder': 'Message',
-                    'rows': 1,
+                    "placeholder": "Message",
+                    "rows": 1,
                 },
             ),
         }
@@ -22,4 +22,4 @@ class MessageForm(forms.ModelForm):
 class SettingsForm(forms.ModelForm):
     class Meta:
         model = models.RoomUser
-        fields = ['alert', 'mail_alert']
+        fields = ["alert", "mail_alert"]

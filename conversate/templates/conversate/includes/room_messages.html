@@ -13,7 +13,7 @@
             <tr class="cnv_user_{{ message.user.username }}">
                 <td data-time="{{ message.timestamp }}">{{ message.timestamp|naturaltimestamp }}</td>
                 <td>{{ message.user.username }}</td>
-                <td>{{ message.content }}</td>
+                <td>{{ message.render|safe }}</td>
             </tr>
             {% endfor %}
         </table>
